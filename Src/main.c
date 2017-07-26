@@ -6,7 +6,7 @@
  */
 #include "main.h"
 #include "Board\BoardSVPE48D.h"
-#include "..\inc\taskID.h"
+#include "inc\taskID.h"
 #include <RTX51TNY.H>
 #include <stdio.h>
 

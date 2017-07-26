@@ -5,8 +5,8 @@ SET CPU_VENDOR=STC
 SET UV2_TARGET=Release
 SET CPU_XTAL=0x00B71B00
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\main.__i"
-"D:\WorkProgram\Keil_V5\C51\BIN\A51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\Conf_tny._ia"
-"D:\WorkProgram\Keil_V5\C51\BIN\A51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\STARTUP._ia"
+"D:\WorkProgram\Keil_V5\C51\BIN\AX51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\Conf_tny._ia"
+"D:\WorkProgram\Keil_V5\C51\BIN\AX51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\STARTUP._ia"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\ADC.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\delay.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\EEPROM.__i"
@@ -20,5 +20,9 @@ SET CPU_XTAL=0x00B71B00
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\console.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\LED.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\CHIPSE~1.__I"
-"D:\WorkProgram\Keil_V5\C51\BIN\BL51.EXE" @".\Objects\SVPE48D.lnp"
-"D:\WorkProgram\Keil_V5\C51\BIN\OH51.EXE" ".\Objects\SVPE48D" 
+"D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\CHIPRT~1.__I"
+"D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\mdcmdio.__i"
+"D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\rtk_api.__i"
+"D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\RTL830~1.__I"
+"D:\WorkProgram\Keil_V5\C51\BIN\LX51.EXE" @".\Objects\SVPE48D.lnp"
+"D:\WorkProgram\Keil_V5\C51\BIN\OHX51.EXE" ".\Objects\SVPE48D" HEX

@@ -16,6 +16,8 @@
 #include <RTX51TNY.H>
 #include "..\inc\taskID.h"
 #define SE0165B_CS 		P37		//片选信号，低（0）有效
+static bool FIRST_MDIO = true;
+
 /*
  * 读取SE0165B寄存器
  * 		regaddr 寄存器地址
@@ -143,12 +145,51 @@ int getE1Alarm(uint8 portN) {
 	return (readSE0165B(SE0165B_E1_ALARM2(portN))<<7) | readSE0165B(SE0165B_E1_ALARM1(portN));
 }
 
+/*
+ * 读smi
+ * 	phy 8306E phy地址
+ * 	phyreg 8306E 寄存器地址
+ */
+uint16 readMDIO(uint8 phy, uint8 phyreg) {
+	writeSE0165B(SE0165B_GLOBAL_PHYADDR_REG, phy);
+	writeSE0165B(SE0165B_GLOBAL_PHYREGADDR_REG, phyreg);
+	writeSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG, MDIO_START);
+	if( !FIRST_MDIO ) {
+		while( (readSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG) & MDIO_READY) == 0 );
+	}
+	else {
+		FIRST_MDIO = false;
+		delay_ms(5);
+	}
+	return (readSE0165B(SE0165B_GLOBAL_MDIORDATH_REG)<<8) | readSE0165B(SE0165B_GLOBAL_MDIORDATL_REG);
+}
+
+/*
+ * 写smi
+ *
+ */
+bool writeMDIO(uint8 phy, uint8 phyreg, uint16 regData) {
+	if(phy > 0x1f) {
+		return false;
+	}
+	writeSE0165B(SE0165B_GLOBAL_PHYADDR_REG, phy);
+	writeSE0165B(SE0165B_GLOBAL_PHYREGADDR_REG, phyreg);
+	writeSE0165B(SE0165B_GLOBAL_MDIOWDATH_REG, (regData>>8) & 0xff);
+	writeSE0165B(SE0165B_GLOBAL_MDIOWDATL_REG, regData & 0xff);
+	if( !FIRST_MDIO ) {
+		while( (readSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG) & MDIO_READY) == 0 );
+	}
+	else {
+		FIRST_MDIO = false;
+		delay_ms(5);
+	}
+	writeSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG, MDIO_START | MDIO_WRITE);
+	return true;
+}
+
 void testChipSE0165B(void) _task_ tsk_test {
 	uint16 chipID = 0x0165;
 	while(1) {
 		os_wait(K_TMO, 100, 0);
-
-	    chipID = readChipID();
-	    printf("chipID: 0x%04x\r\n", chipID);
 	}
 }

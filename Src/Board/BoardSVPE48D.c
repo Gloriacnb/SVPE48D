@@ -8,6 +8,7 @@
 #include "..\Board\console.h"
 #include "..\Board\LED.h"
 #include "..\Board\ChipSE0165B.h"
+#include "..\Board\ChipRTL8306E.h"
 #include "..\STCLib\GPIO.h"
 #include "..\inc\taskID.h"
 #include <stdio.h>
@@ -30,6 +31,9 @@ void boardInit(void) {
         printf("Init SE0165B failed!!\r\n");
     }
 	initLEDs();
+	if( !initRTL8306E() ) {
+		printf("Init RTL8306E failed!!\r\n");
+	}
 	printf("Board initial completed.\r\n");
 
 //	boardAutoTest();

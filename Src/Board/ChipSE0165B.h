@@ -16,6 +16,8 @@ bool initSE0165B(void);
 void sendByteSDO0(uint8 byte);
 uint8 getByteSDO0(void);
 int getE1Alarm(uint8 portN);
+uint16 readMDIO(uint8 phy, uint8 phyreg);
+bool writeMDIO(uint8 phy, uint8 phyreg, uint16 regData);
 
 #define SE0165B_GLOBAL_ADDR_BASE								0x0000
 #define SE0165B_E1_ADDR_BASE									0x0100
@@ -40,6 +42,10 @@ int getE1Alarm(uint8 portN);
 #define SE0165B_GLOBAL_MDIOWDATL_REG							(SE0165B_GLOBAL_ADDR_BASE + 0x11)
 #define SE0165B_GLOBAL_MDIORDATH_REG							(SE0165B_GLOBAL_ADDR_BASE + 0x12)
 #define SE0165B_GLOBAL_MDIORDATL_REG							(SE0165B_GLOBAL_ADDR_BASE + 0x13)
+
+#define MDIO_START	(1<<7)
+#define MDIO_WRITE	(1<<6)
+#define MDIO_READY	(1<<0)
 
 #define SE0165B_GLOBAL_SDIO_OPT									(SE0165B_GLOBAL_ADDR_BASE + 0x6F)
 #define SE0165B_GLOBAL_SDO0BYTE0_REG							(SE0165B_GLOBAL_ADDR_BASE + 0x70)

@@ -12,6 +12,8 @@ typedef 	unsigned char	uint8;
 typedef 	unsigned int	uint16;
 typedef 	unsigned long	uint32;
 typedef		char			bool;
+typedef 	char 			int8;
+typedef 	short 			int16;
 
 #ifndef true
 #define true 	(1==1)
