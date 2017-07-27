@@ -1,0 +1,22 @@
+readme
+ Created on: 2017年7月20日
+     Author: Administrator
+	目录结构如下图：     
+	SVPE48D
+	├─.settings
+	├─List
+	├─Objects
+	└─Src
+	    ├─Board			//组成设备的各个板级组件，包括芯片、接口、LED等，在此存储其功能函数和初始化
+	    ├─Business		//业务逻辑单元，主要对应设备的功能需求，包括以太业务配置、E1端口配置、设备属性等
+	    ├─inc			//一些数据类型重定义和RTX taskID等全局依赖的头文件
+	    ├─mix			//为了消除Eclipse和Keil两个编译环境差异引起的警告，后期会考虑去除
+	    ├─RTLLib		//RTL8306E的sdk
+	    └─STCLib		//STC公司提供的15系列单片机片内外设驱动
+    .settings 为eclipse工程管理相关文件，可不予理会
+    List目录是Kei编译的信息输出，其中*。lst文件可用于查看汇编代码，SVPE48D.map文件可检查最终的存储空间分配情况。
+    Objects目录是Keil编译链接的输出，包括Debug信息和最终要烧写到芯片内运行的 SVPE48D。hex文件
+ 	以上文件夹都不需要更改
+    Src目录为源文件目录，是主要的工作目录
+		在Src目录下，包含Main文件和单片机启动文件与RTX配置文件，这些都不需要改动。
+	根目录下为Keil的工程文件
