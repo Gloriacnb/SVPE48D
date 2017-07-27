@@ -154,13 +154,14 @@ uint16 readMDIO(uint8 phy, uint8 phyreg) {
 	writeSE0165B(SE0165B_GLOBAL_PHYADDR_REG, phy);
 	writeSE0165B(SE0165B_GLOBAL_PHYREGADDR_REG, phyreg);
 	writeSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG, MDIO_START);
-	if( !FIRST_MDIO ) {
-		while( (readSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG) & MDIO_READY) == 0 );
-	}
-	else {
-		FIRST_MDIO = false;
-		delay_ms(5);
-	}
+//	if( !FIRST_MDIO ) {
+//		while( (readSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG) & MDIO_READY) == 0 );
+//	}
+//	else {
+//		FIRST_MDIO = false;
+//		delay_ms(5);
+//	}
+	delay_ms(1);
 	return (readSE0165B(SE0165B_GLOBAL_MDIORDATH_REG)<<8) | readSE0165B(SE0165B_GLOBAL_MDIORDATL_REG);
 }
 
@@ -176,14 +177,15 @@ bool writeMDIO(uint8 phy, uint8 phyreg, uint16 regData) {
 	writeSE0165B(SE0165B_GLOBAL_PHYREGADDR_REG, phyreg);
 	writeSE0165B(SE0165B_GLOBAL_MDIOWDATH_REG, (regData>>8) & 0xff);
 	writeSE0165B(SE0165B_GLOBAL_MDIOWDATL_REG, regData & 0xff);
-	if( !FIRST_MDIO ) {
-		while( (readSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG) & MDIO_READY) == 0 );
-	}
-	else {
-		FIRST_MDIO = false;
-		delay_ms(5);
-	}
+//	if( !FIRST_MDIO ) {
+//		while( (readSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG) & MDIO_READY) == 0 );
+//	}
+//	else {
+//		FIRST_MDIO = false;
+//		delay_ms(1);
+//	}
 	writeSE0165B(SE0165B_GLOBAL_MDIOCONTROL_REG, MDIO_START | MDIO_WRITE);
+	delay_ms(1);
 	return true;
 }
 
