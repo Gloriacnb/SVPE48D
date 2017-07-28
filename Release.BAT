@@ -1,12 +1,12 @@
-SET C51INC=D:\WorkProgram\Keil_V5\C51\Inc
-SET C51LIB=D:\WorkProgram\Keil_V5\C51\Lib
+SET C51BIN=D:\WorkProgram\Keil_V5\C51\BIN\
+SET C51INC=D:\EclipseWorkspace\SVPE48D\Src
 SET CPU_TYPE=STC15W4K32S4
 SET CPU_VENDOR=STC
 SET UV2_TARGET=Release
 SET CPU_XTAL=0x00B71B00
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\main.__i"
-"D:\WorkProgram\Keil_V5\C51\BIN\AX51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\Conf_tny._ia"
 "D:\WorkProgram\Keil_V5\C51\BIN\AX51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\STARTUP._ia"
+"D:\WorkProgram\Keil_V5\C51\BIN\AX51.EXE" @".\Objects\..\..\..\ECLIPS~1\SVPE48D\Src\Conf_tny._ia"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\ADC.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\delay.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\EEPROM.__i"

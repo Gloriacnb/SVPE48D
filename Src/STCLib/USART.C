@@ -1,38 +1,51 @@
 
 #include "USART.h"
+#include <RTX51TNY.H>
 
+#define  OLEN  8                      /* size of serial transmission buffer   */
+unsigned char  ostart;                /* transmission buffer start index      */
+unsigned char  oend;                  /* transmission buffer end index        */
+idata    char  outbuf[OLEN];          /* storage for transmission buffer      */
+unsigned char  otask = 0xff;          /* task number of output task           */
 
-COMx_Define	COM1,COM2;
-u8	xdata TX1_Buffer[COM_TX1_Lenth];	//·¢ËÍ»º³å
-u8 	xdata RX1_Buffer[COM_RX1_Lenth];	//½ÓÊÕ»º³å
-u8	xdata TX2_Buffer[COM_TX2_Lenth];	//·¢ËÍ»º³å
-u8 	xdata RX2_Buffer[COM_RX2_Lenth];	//½ÓÊÕ»º³å
+#define  ILEN  8                      /* size of serial receiving buffer      */
+unsigned char  istart;                /* receiving buffer start index         */
+unsigned char  iend;                  /* receiving buffer end index           */
+idata    char  inbuf[ILEN];           /* storage for receiving buffer         */
+unsigned char  itask = 0xff;          /* task number of output task           */
+
+static bit   sendfull;                /* flag: marks transmit buffer full     */
+static bit   sendactive;              /* flag: marks transmitter active       */
+//static bit   sendstop;                /* flag: marks XOFF character           */
 
 u8 USART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
 {
 	u8	i;
 	u16	j;
 	
+	sendfull = 0;
+	sendactive = 0;
+//	sendstop = 0;
+
 	if(UARTx == USART1)
 	{
-		COM1.id = 1;
-		COM1.TX_read    = 0;
-		COM1.TX_write   = 0;
-		COM1.B_TX_busy  = 0;
-		COM1.RX_Cnt     = 0;
-		COM1.RX_TimeOut = 0;
-		COM1.B_RX_OK    = 0;
-		for(i=0; i<COM_TX1_Lenth; i++)	TX1_Buffer[i] = 0;
-		for(i=0; i<COM_RX1_Lenth; i++)	RX1_Buffer[i] = 0;
+		ostart    	= 0;
+		oend	   	= 0;
+		otask  		= 0xff;
+		istart     	= 0;
+		iend	 	= 0;
+		itask    	= 0xff;
+		for(i=0; i<OLEN; i++)	outbuf[i] = 0;
+		for(i=0; i<ILEN; i++)	inbuf[i] = 0;
 
-		if(COMx->UART_Mode > UART_9bit_BRTx)	return 2;	//Ä£Ê½´íÎó
-		if(COMx->UART_Polity == PolityHigh)		PS = 1;	//¸ßÓÅÏÈ¼¶ÖÐ¶Ï
-		else									PS = 0;	//µÍÓÅÏÈ¼¶ÖÐ¶Ï
+		if(COMx->UART_Mode > UART_9bit_BRTx)	return 2;	//æ¨¡å¼é”™è¯¯
+		if(COMx->UART_Polity == PolityHigh)		PS = 1;	//é«˜ä¼˜å…ˆçº§ä¸­æ–­
+		else									PS = 0;	//ä½Žä¼˜å…ˆçº§ä¸­æ–­
 		SCON = (SCON & 0x3f) | COMx->UART_Mode;
-		if((COMx->UART_Mode == UART_9bit_BRTx) ||(COMx->UART_Mode == UART_8bit_BRTx))	//¿É±ä²¨ÌØÂÊ
+		if((COMx->UART_Mode == UART_9bit_BRTx) ||(COMx->UART_Mode == UART_8bit_BRTx))	//å¯å˜æ³¢ç‰¹çŽ‡
 		{
-			j = (MAIN_Fosc / 4) / COMx->UART_BaudRate;	//°´1T¼ÆËã
-			if(j >= 65536UL)	return 2;	//´íÎó
+			j = (MAIN_Fosc / 4) / COMx->UART_BaudRate;	//æŒ‰1Tè®¡ç®—
+			if(j >= 65536UL)	return 2;	//é”™è¯¯
 			j = 65536UL - j;
 
 			if(COMx->UART_BRT_Use == BRT_Timer1)
@@ -44,9 +57,9 @@ u8 USART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
 				AUXR |=  (1<<6);	//Timer1 set as 1T mode
 				TH1 = (u8)(j>>8);
 				TL1 = (u8)j;
-				ET1 = 0;	//½ûÖ¹ÖÐ¶Ï
-				TMOD &= ~0x40;	//¶¨Ê±
-				INT_CLKO &= ~0x02;	//²»Êä³öÊ±ÖÓ
+				ET1 = 0;	//ç¦æ­¢ä¸­æ–­
+				TMOD &= ~0x40;	//å®šæ—¶
+				INT_CLKO &= ~0x02;	//ä¸è¾“å‡ºæ—¶é’Ÿ
 				TR1  = 1;
 			}
 			else if(COMx->UART_BRT_Use == BRT_Timer2)
@@ -57,174 +70,122 @@ u8 USART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
 				AUXR |=  (1<<2);	//Timer2 set as 1T mode
 				TH2 = (u8)(j>>8);
 				TL2 = (u8)j;
-				IE2  &= ~(1<<2);	//½ûÖ¹ÖÐ¶Ï
-				AUXR &= ~(1<<3);	//¶¨Ê±
+				IE2  &= ~(1<<2);	//ç¦æ­¢ä¸­æ–­
+				AUXR &= ~(1<<3);	//å®šæ—¶
 				AUXR |=  (1<<4);	//Timer run enable
 			}
-			else return 2;	//´íÎó
+			else return 2;	//é”™è¯¯
 		}
 		else if(COMx->UART_Mode == UART_ShiftRight)
 		{
-			if(COMx->BaudRateDouble == ENABLE)	AUXR |=  (1<<5);	//¹Ì¶¨²¨ÌØÂÊSysClk/2
-			else								AUXR &= ~(1<<5);	//¹Ì¶¨²¨ÌØÂÊSysClk/12
+			if(COMx->BaudRateDouble == ENABLE)	AUXR |=  (1<<5);	//å›ºå®šæ³¢ç‰¹çŽ‡SysClk/2
+			else								AUXR &= ~(1<<5);	//å›ºå®šæ³¢ç‰¹çŽ‡SysClk/12
 		}
-		else if(COMx->UART_Mode == UART_9bit)	//¹Ì¶¨²¨ÌØÂÊSysClk*2^SMOD/64
+		else if(COMx->UART_Mode == UART_9bit)	//å›ºå®šæ³¢ç‰¹çŽ‡SysClk*2^SMOD/64
 		{
-			if(COMx->BaudRateDouble == ENABLE)	PCON |=  (1<<7);	//¹Ì¶¨²¨ÌØÂÊSysClk/32
-			else								PCON &= ~(1<<7);	//¹Ì¶¨²¨ÌØÂÊSysClk/64
+			if(COMx->BaudRateDouble == ENABLE)	PCON |=  (1<<7);	//å›ºå®šæ³¢ç‰¹çŽ‡SysClk/32
+			else								PCON &= ~(1<<7);	//å›ºå®šæ³¢ç‰¹çŽ‡SysClk/64
 		}
-		if(COMx->UART_Interrupt == ENABLE)	ES = 1;	//ÔÊÐíÖÐ¶Ï
-		else								ES = 0;	//½ûÖ¹ÖÐ¶Ï
-		if(COMx->UART_RxEnable == ENABLE)	REN = 1;	//ÔÊÐí½ÓÊÕ
-		else								REN = 0;	//½ûÖ¹½ÓÊÕ
-		P_SW1 = (P_SW1 & 0x3f) | (COMx->UART_P_SW & 0xc0);	//ÇÐ»»IO
-		if(COMx->UART_RXD_TXD_Short == ENABLE)	PCON2 |=  (1<<4);	//ÄÚ²¿¶ÌÂ·RXDÓëTXD, ×öÖÐ¼Ì, ENABLE,DISABLE
+		if(COMx->UART_Interrupt == ENABLE)	ES = 1;	//å…è®¸ä¸­æ–­
+		else								ES = 0;	//ç¦æ­¢ä¸­æ–­
+		if(COMx->UART_RxEnable == ENABLE)	REN = 1;	//å…è®¸æŽ¥æ”¶
+		else								REN = 0;	//ç¦æ­¢æŽ¥æ”¶
+		P_SW1 = (P_SW1 & 0x3f) | (COMx->UART_P_SW & 0xc0);	//åˆ‡æ¢IO
+		if(COMx->UART_RXD_TXD_Short == ENABLE)	PCON2 |=  (1<<4);	//å†…éƒ¨çŸ­è·¯RXDä¸ŽTXD, åšä¸­ç»§, ENABLE,DISABLE
 		else									PCON2 &= ~(1<<4);
 		return	0;
 	}
 
+/*
 	if(UARTx == USART2)
 	{
-		COM2.id = 2;
-		COM2.TX_read    = 0;
-		COM2.TX_write   = 0;
-		COM2.B_TX_busy  = 0;
-		COM2.RX_Cnt     = 0;
-		COM2.RX_TimeOut = 0;
-		COM2.B_RX_OK    = 0;
-		for(i=0; i<COM_TX2_Lenth; i++)	TX2_Buffer[i] = 0;
-		for(i=0; i<COM_RX2_Lenth; i++)	RX2_Buffer[i] = 0;
+		COM2.id = 1;
+		COM2.ostart    	= 0;
+		COM2.oend	   	= 0;
+		COM2.otask  	= 0xff;
+		COM2.istart     = 0;
+		COM2.iend	 	= 0;
+		COM2.itask    	= 0xff;
+		for(i=0; i<OLEN; i++)	COM2.outbuf[i] = 0;
+		for(i=0; i<ILEN; i++)	COM2.inbuf[i] = 0;
 
-		if((COMx->UART_Mode == UART_9bit_BRTx) ||(COMx->UART_Mode == UART_8bit_BRTx))	//¿É±ä²¨ÌØÂÊ
+		if((COMx->UART_Mode == UART_9bit_BRTx) ||(COMx->UART_Mode == UART_8bit_BRTx))	//å¯å˜æ³¢ç‰¹çŽ‡
 		{
-			if(COMx->UART_Polity == PolityHigh)		IP2 |=  1;	//¸ßÓÅÏÈ¼¶ÖÐ¶Ï
-			else									IP2 &= ~1;	//µÍÓÅÏÈ¼¶ÖÐ¶Ï
+			if(COMx->UART_Polity == PolityHigh)		IP2 |=  1;	//é«˜ä¼˜å…ˆçº§ä¸­æ–­
+			else									IP2 &= ~1;	//ä½Žä¼˜å…ˆçº§ä¸­æ–­
 			if(COMx->UART_Mode == UART_9bit_BRTx)	S2CON |=  (1<<7);	//9bit
 			else									S2CON &= ~(1<<7);	//8bit
-			j = (MAIN_Fosc / 4) / COMx->UART_BaudRate;	//°´1T¼ÆËã
-			if(j >= 65536UL)	return 2;	//´íÎó
+			j = (MAIN_Fosc / 4) / COMx->UART_BaudRate;	//æŒ‰1Tè®¡ç®—
+			if(j >= 65536UL)	return 2;	//é”™è¯¯
 			j = 65536UL - j;
 			AUXR &= ~(1<<4);	//Timer stop
 			AUXR &= ~(1<<3);	//Timer2 set As Timer
 			AUXR |=  (1<<2);	//Timer2 set as 1T mode
 			TH2 = (u8)(j>>8);
 			TL2 = (u8)j;
-			IE2  &= ~(1<<2);	//½ûÖ¹ÖÐ¶Ï
+			IE2  &= ~(1<<2);	//ç¦æ­¢ä¸­æ–­
 			AUXR |=  (1<<4);	//Timer run enable
 		}
-		else	return 2;	//Ä£Ê½´íÎó
-		if(COMx->UART_Interrupt == ENABLE)	IE2   |=  1;		//ÔÊÐíÖÐ¶Ï
-		else								IE2   &= ~1;		//½ûÖ¹ÖÐ¶Ï
-		if(COMx->UART_RxEnable == ENABLE)	S2CON |=  (1<<4);	//ÔÊÐí½ÓÊÕ
-		else								S2CON &= ~(1<<4);	//½ûÖ¹½ÓÊÕ
-		P_SW2 = (P_SW2 & ~1) | (COMx->UART_P_SW & 0x01);	//ÇÐ»»IO
+		else	return 2;	//æ¨¡å¼é”™è¯¯
+		if(COMx->UART_Interrupt == ENABLE)	IE2   |=  1;		//å…è®¸ä¸­æ–­
+		else								IE2   &= ~1;		//ç¦æ­¢ä¸­æ–­
+		if(COMx->UART_RxEnable == ENABLE)	S2CON |=  (1<<4);	//å…è®¸æŽ¥æ”¶
+		else								S2CON &= ~(1<<4);	//ç¦æ­¢æŽ¥æ”¶
+		P_SW2 = (P_SW2 & ~1) | (COMx->UART_P_SW & 0x01);	//åˆ‡æ¢IO
 	}
+*/
 		return	0;
 }
 
 
-/*************** ×°ÔØ´®¿Ú·¢ËÍ»º³å *******************************/
+/*************** è£…è½½ä¸²å£å‘é€ç¼“å†² *******************************/
 
-void TX1_write2buff(u8 dat)	//Ð´Èë·¢ËÍ»º³å£¬Ö¸Õë+1
+void putBuf1(char c)	//å†™å…¥å‘é€ç¼“å†²ï¼ŒæŒ‡é’ˆ+1
 {
-	TX1_Buffer[COM1.TX_write] = dat;	//×°·¢ËÍ»º³å
-	if(++COM1.TX_write >= COM_TX1_Lenth)	COM1.TX_write = 0;
-
-	if(COM1.B_TX_busy == 0)		//¿ÕÏÐ
-	{  
-		COM1.B_TX_busy = 1;		//±êÖ¾Ã¦
-		TI = 1;					//´¥·¢·¢ËÍÖÐ¶Ï
+	if (!sendfull) { 								/* transmit only if buffer not full     */
+		ES = 0; 									/* disable serial interrupt             */
+		if (!sendactive /*&& !sendstop*/) { 		/* if transmitter not active:           */
+			sendactive = 1; 						/* transfer the first character direct  */
+			SBUF = c; 								/* to SBUF to start transmission        */
+		} else { 									/* otherwize:                           */
+			outbuf[oend++ & (OLEN - 1)] = c; 		/* transfer char to transmission buffer */
+			if (((oend ^ ostart) & (OLEN - 1)) == 0)
+				sendfull = 1;
+		} 											/* set flag if buffer is full           */
+		ES = 1; 									/* enable serial interrupt              */
 	}
 }
 
-void TX2_write2buff(u8 dat)	//Ð´Èë·¢ËÍ»º³å£¬Ö¸Õë+1
+/********************* UART1ä¸­æ–­å‡½æ•°************************/
+void UART1_int (void) interrupt UART1_VECTOR using 2
 {
-	TX2_Buffer[COM2.TX_write] = dat;	//×°·¢ËÍ»º³å
-	if(++COM2.TX_write >= COM_TX2_Lenth)	COM2.TX_write = 0;
-
-	if(COM2.B_TX_busy == 0)		//¿ÕÏÐ
-	{  
-		COM2.B_TX_busy = 1;		//±êÖ¾Ã¦
-		SET_TI2();				//´¥·¢·¢ËÍÖÐ¶Ï
+	u8 c;
+	if (RI) { 										/* if receiver interrupt                 */
+		c = SBUF; 									/* read character                        */
+		RI = 0; 									/* clear interrupt request flag          */
+		if (istart + ILEN != iend) {
+			inbuf[iend++ & (ILEN-1)] = c;
+		}
+													/* if task waiting: signal ready         */
+		if (itask != 0xFF) isr_send_signal (itask);
 	}
-}
 
-void PrintString1(u8 *puts)
-{
-    for (; *puts != 0;	puts++)  TX1_write2buff(*puts); 	//Óöµ½Í£Ö¹·û0½áÊø
-}
-
-void PrintString2(u8 *puts)
-{
-    for (; *puts != 0;	puts++)  TX2_write2buff(*puts); 	//Óöµ½Í£Ö¹·û0½áÊø
-}
-
-/*
-void COMx_write2buff(COMx_Define *COMx, u8 dat)	//Ð´Èë·¢ËÍ»º³å£¬Ö¸Õë+1
-{
-	if(COMx->id == 1)	TX1_write2buff(dat);
-	if(COMx->id == 2)	TX2_write2buff(dat);
-}
-
-void PrintString(COMx_Define *COMx, u8 *puts)
-{
-    for (; *puts != 0;	puts++)  COMx_write2buff(COMx,*puts); 	//Óöµ½Í£Ö¹·û0½áÊø
-}
-*/
-
-
-/********************* UART1ÖÐ¶Ïº¯Êý************************/
-void UART1_int (void) interrupt UART1_VECTOR
-{
-	if(RI)
-	{
-		RI = 0;
-		if(COM1.B_RX_OK == 0)
-		{
-			if(COM1.RX_Cnt >= COM_RX1_Lenth)	COM1.RX_Cnt = 0;
-			RX1_Buffer[COM1.RX_Cnt++] = SBUF;
-			COM1.RX_TimeOut = TimeOutSet1;
+	if (TI ) { 										/* if transmitter interrupt              */
+		TI = 0; 									/* clear interrupt request flag          */
+		if (ostart != oend) { 						/* if characters in buffer and           */
+			SBUF = outbuf[ostart++ & (OLEN-1)]; 	/* transmit character        */
+			sendfull = 0; 							/* clear 'sendfull' flag                 */
+													/* if task waiting: signal ready         */
+			if (otask != 0xFF) {
+				isr_send_signal(otask);
+			}
+		}
+		else {
+			sendactive = 0; 						/* if all transmitted clear 'sendactive' */
 		}
 	}
-
-	if(TI)
-	{
-		TI = 0;
-		if(COM1.TX_read != COM1.TX_write)
-		{
-		 	SBUF = TX1_Buffer[COM1.TX_read];
-			if(++COM1.TX_read >= COM_TX1_Lenth)		COM1.TX_read = 0;
-		}
-		else	COM1.B_TX_busy = 0;
-	}
 }
 
-/********************* UART2ÖÐ¶Ïº¯Êý************************/
-void UART2_int (void) interrupt UART2_VECTOR
-{
-	if(RI2)
-	{
-		CLR_RI2();
-		if(COM2.B_RX_OK == 0)
-		{
-			if(COM2.RX_Cnt >= COM_RX2_Lenth)	COM2.RX_Cnt = 0;
-			RX2_Buffer[COM2.RX_Cnt++] = S2BUF;
-			COM2.RX_TimeOut = TimeOutSet2;
-		}
-	}
-
-	if(TI2)
-	{
-		CLR_TI2();
-		if(COM2.TX_read != COM2.TX_write)
-		{
-		 	S2BUF = TX2_Buffer[COM2.TX_read];
-			if(++COM2.TX_read >= COM_TX2_Lenth)		COM2.TX_read = 0;
-		}
-		else	COM2.B_TX_busy = 0;
-	}
-
-}
 
 /*
  * functions for C-Lib
@@ -232,34 +193,26 @@ void UART2_int (void) interrupt UART2_VECTOR
 /******************************************************************************/
 /*       putchar:  interrupt controlled putchar function                      */
 /******************************************************************************/
-char putchar (char c)  {
-//  if (c == '\n')  {                   /* expand new line character:           */
-//    while (sendfull)  {               /* wait for transmission buffer empty   */
-//      otask = os_running_task_id ();  /* set output task number               */
-//      os_wait (K_SIG, 0, 0);          /* RTX-51 call: wait for signal         */
-//      otask = 0xff;                   /* clear output task number             */
-//    }
-//    putbuf (0x0D);                    /* send CR before LF for <new line>     */
-//  }
-//  while (sendfull)  {                 /* wait for transmission buffer empty   */
-//    otask = os_running_task_id ();    /* set output task number               */
-//    os_wait (K_SIG, 0, 0);            /* RTX-51 call: wait for signal         */
-//    otask = 0xff;                     /* clear output task number             */
-//  }
-	  TX1_write2buff (c);                         /* send character                       */
-	  return (c);                         /* return character: ANSI requirement   */
+char putchar(char c) {
+	while (sendfull) { 					/* wait for transmission buffer empty   */
+		otask = os_running_task_id(); 	/* set output task number               */
+		os_wait(K_SIG, 0, 0); 			/* RTX-51 call: wait for signal         */
+		otask = 0xff; 					/* clear output task number             */
+	}
+	putBuf1(c); 						/* send character                       */
+	return (c); 						/* return character: ANSI requirement   */
 }
 
 
 /******************************************************************************/
 /*       _getkey:  interrupt controlled _getkey                               */
 /******************************************************************************/
-//char _getkey (void)  {
-//  while  (iend == istart)  {
-//    itask = os_running_task_id ();    /* set input task number                */
-//    os_wait (K_SIG, 0, 0);            /* RTX-51 call: wait for signal         */
-//    itask = 0xff;                     /* clear input task number              */
-//  }
-//  return (inbuf[istart++ & (ILEN-1)]);
-//}
+char _getkey(void) {
+	while (iend == istart) {
+		itask = os_running_task_id(); 	/* set input task number                */
+		os_wait(K_SIG, 0, 0); 			/* RTX-51 call: wait for signal         */
+		itask = 0xff; 					/* clear input task number              */
+	}
+	return (inbuf[istart++ & (ILEN - 1)]);
+}
 

@@ -11,7 +11,8 @@
 #include "..\board\ChipSE0165B.h"
 #include "..\Business\E1Port.h"
 #include <stdio.h>
-#define LED_RUN P35
+#define LED_RUN P36
+#define LED_TOP_ALM P35
 
 /*
  * bdata 和相关的 sbit变量必须设置为全局变量
@@ -94,15 +95,30 @@ void ledE1(void) _task_ tsk_led_e1 {
 		for (i = 0; i < 4; ++i) {
 			E1_ALARM[i] = getE1Alarm(i);
 		}
-        E1_1_tsf = ((E1_ALARM[0]&0xff)!=0);
-        E1_2_tsf = ((E1_ALARM[1]&0xff)!=0);
-        E1_3_tsf = ((E1_ALARM[2]&0xff)!=0);
-        E1_4_tsf = ((E1_ALARM[3]&0xff)!=0);
+        E1_1_tsf = ((E1_ALARM[0]&0xaf)!=0);
+        E1_2_tsf = ((E1_ALARM[1]&0xaf)!=0);
+        E1_3_tsf = ((E1_ALARM[2]&0xaf)!=0);
+        E1_4_tsf = ((E1_ALARM[3]&0xaf)!=0);
         
-        E1_1_los = ~(E1_ALARM[0]>>0)&1;
-        E1_2_los = ~(E1_ALARM[1]>>0)&1;
-        E1_3_los = ~(E1_ALARM[2]>>0)&1;
-        E1_4_los = ~(E1_ALARM[3]>>0)&1;
+        if( ((E1_ALARM[0]>>4)&1) && (~(E1_ALARM[0]>>0)&1) )
+        	E1_1_los ^= 1;						//CV告警work灯闪烁
+        else
+        	E1_1_los = ~(E1_ALARM[0]>>0)&1;
+
+        if( ((E1_ALARM[1]>>4)&1)  && (~(E1_ALARM[1]>>0)&1) )
+        	E1_2_los ^= 1;
+        else
+        	E1_2_los = ~(E1_ALARM[1]>>0)&1;
+
+        if( ((E1_ALARM[2]>>4)&1)  && (~(E1_ALARM[2]>>0)&1) )
+        	E1_3_los ^= 1;
+        else
+        	E1_3_los = ~(E1_ALARM[2]>>0)&1;
+
+        if( ((E1_ALARM[3]>>4)&1)  && (~(E1_ALARM[3]>>0)&1) )
+        	E1_4_los ^= 1;
+        else
+        	E1_4_los = ~(E1_ALARM[3]>>0)&1;
 
         refreshE1LEDs(LED_STA);
 		os_wait (K_TMO, 100, 0);
