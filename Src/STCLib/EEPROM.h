@@ -4,48 +4,56 @@
 
 #include	"config.h"
 
-//	Ñ¡ÔñMCUĞÍºÅ
-#define	MCU_Type	STC15F_L2K08S2	//STC15F_L2K08S2, STC15F_L2K16S2, STC15F_L2K24S2, STC15F_L2K32S2, STC15F_L2K40S2, STC15F_L2K48S2, STC15F_L2K56S2, STC15F_L2K60S2, IAP15F_L2K61S2
+//	é€‰æ‹©MCUå‹å·
+#define	MCU_Type	STC15W4K48S4	//STC15F_L2K08S2, STC15F_L2K16S2, STC15F_L2K24S2, STC15F_L2K32S2, STC15F_L2K40S2, STC15F_L2K48S2, STC15F_L2K56S2, STC15F_L2K60S2, IAP15F_L2K61S2
 
 
 /************************** ISP/IAP *****************************
- IAPÏµÁĞ ¿ÉÒÔÔÚÓ¦ÓÃ³ÌĞòĞŞ¸ÄÓ¦ÓÃ³ÌĞò¡£
+ IAPç³»åˆ— å¯ä»¥åœ¨åº”ç”¨ç¨‹åºä¿®æ”¹åº”ç”¨ç¨‹åºã€‚
 
-STC15F/L2KxxS2	ÉÈÇø·ÖÅä£¬512×Ö½Ú/ÉÈÇø£¬´Ó0x0000¿ªÊ¼¡£
+STC15F/L2KxxS2	æ‰‡åŒºåˆ†é…ï¼Œ512å­—èŠ‚/æ‰‡åŒºï¼Œä»0x0000å¼€å§‹ã€‚
 
-     ĞÍºÅ        ´óĞ¡   ÉÈÇøÊı  ¿ªÊ¼µØÖ·  ½áÊøµØÖ·   MOVC¶ÁÆ«ÒÆµØÖ·
-STC15F/L2K08S2   53K   106ÉÈÇø  0x0000  ~  0xD3FF        0x2000
-STC15F/L2K16S2   45K    90ÉÈÇø  0x0000  ~  0xB3FF        0x4000
-STC15F/L2K24S2   37K    74ÉÈÇø  0x0000  ~  0x93FF        0x6000
-STC15F/L2K32S2   29K    58ÉÈÇø  0x0000  ~  0x73FF        0x8000
-STC15F/L2K40S2   21K    42ÉÈÇø  0x0000  ~  0x53FF        0xA000
-STC15F/L2K48S2   13K    26ÉÈÇø  0x0000  ~  0x33FF        0xC000
-STC15F/L2K56S2   5K     10ÉÈÇø  0x0000  ~  0x13FF        0xE000
-STC15F/L2K60S2   1K      2ÉÈÇø  0x0000  ~  0x03FF        0xF000
+     å‹å·        å¤§å°   æ‰‡åŒºæ•°  å¼€å§‹åœ°å€  ç»“æŸåœ°å€   MOVCè¯»åç§»åœ°å€
+STC15F/L2K08S2   53K   106æ‰‡åŒº  0x0000  ~  0xD3FF        0x2000
+STC15F/L2K16S2   45K    90æ‰‡åŒº  0x0000  ~  0xB3FF        0x4000
+STC15F/L2K24S2   37K    74æ‰‡åŒº  0x0000  ~  0x93FF        0x6000
+STC15F/L2K32S2   29K    58æ‰‡åŒº  0x0000  ~  0x73FF        0x8000
+STC15F/L2K40S2   21K    42æ‰‡åŒº  0x0000  ~  0x53FF        0xA000
+STC15F/L2K48S2   13K    26æ‰‡åŒº  0x0000  ~  0x33FF        0xC000
+STC15F/L2K56S2   5K     10æ‰‡åŒº  0x0000  ~  0x13FF        0xE000
+STC15F/L2K60S2   1K      2æ‰‡åŒº  0x0000  ~  0x03FF        0xF000
 
-STC15F/L2K61S2   ÎŞEPROM, Õû¸ö122ÉÈÇøµÄFLASH¶¼¿ÉÒÔ²ÁĞ´ µØÖ· 0x0000~0xF3ff.
+STC15F/L2K61S2   æ— EPROM, æ•´ä¸ª122æ‰‡åŒºçš„FLASHéƒ½å¯ä»¥æ“¦å†™ åœ°å€ 0x0000~0xF3ff.
+
+STC15W4K32S4	 26K    52æ‰‡åŒº 0x0000  ~  0x67FF		  0x8C00
+STC15W4K40S4	 18K    36æ‰‡åŒº 0x0000  ~  0x47FF		  0xAC00
+STC15W4K48S4	 10K    20æ‰‡åŒº 0x0000  ~  0x27FF		  0xCC00
+
 
 */
 
-#if   (MCU_Type == STC15F_L2K08S2)
-      #define   MOVC_ShiftAddress    0x2000
-#elif (MCU_Type == STC15F_L2K16S2)
-      #define   MOVC_ShiftAddress    0x4000
-#elif (MCU_Type == STC15F_L2K24S2
-      #define   MOVC_ShiftAddress    0x6000
-#elif (MCU_Type == STC15F_L2K32S2
-      #define   MOVC_ShiftAddress    0x8000
-#elif (MCU_Type == STC15F_L2K40S2
-      #define   MOVC_ShiftAddress    0xA000
-#elif (MCU_Type == STC15F_L2K48S2
-      #define   MOVC_ShiftAddress    0xC000
-#elif (MCU_Type == STC15F_L2K56S2
-      #define   MOVC_ShiftAddress    0xE000
-#elif (MCU_Type == STC15F_L2K60S2
-      #define   MOVC_ShiftAddress    0xF000
-#elif (MCU_Type == IAP15F_L2K61S2
-      #define   MOVC_ShiftAddress    0x0000
-#endif
+//#if   (MCU_Type == STC15W4K48S4)
+//      #define   MOVC_ShiftAddress    0xCC00
+//#elif (MCU_Type == STC15F_L2K08S2)
+//      #define   MOVC_ShiftAddress    0x2000
+//#elif (MCU_Type == STC15F_L2K16S2)
+//      #define   MOVC_ShiftAddress    0x4000
+//#elif (MCU_Type == STC15F_L2K24S2)
+//      #define   MOVC_ShiftAddress    0x6000
+//#elif (MCU_Type == STC15F_L2K32S2)
+//      #define   MOVC_ShiftAddress    0x8000
+//#elif (MCU_Type == STC15F_L2K40S2)
+//      #define   MOVC_ShiftAddress    0xA000
+//#elif (MCU_Type == STC15F_L2K48S2)
+//      #define   MOVC_ShiftAddress    0xC000
+//#elif (MCU_Type == STC15F_L2K56S2)
+//      #define   MOVC_ShiftAddress    0xE000
+//#elif (MCU_Type == STC15F_L2K60S2)
+//      #define   MOVC_ShiftAddress    0xF000
+//#elif (MCU_Type == IAP15F_L2K61S2)
+//      #define   MOVC_ShiftAddress    0x0000
+
+//#endif
 
 
 void	DisableEEPROM(void);

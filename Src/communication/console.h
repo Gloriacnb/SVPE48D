@@ -8,6 +8,9 @@
 #ifndef SRC_BOARD_CONSOLE_H_
 #define SRC_BOARD_CONSOLE_H_
 
-void initConsole(void);
+#include "..\inc\type.h"
+#include "..\communication\command.h"
 
+void initConsole(void);
+void consoleSendFrame(CMD_FRAME* f);
 #endif /* SRC_BOARD_CONSOLE_H_ */

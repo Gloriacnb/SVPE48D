@@ -19,6 +19,16 @@ int getE1Alarm(uint8 portN);
 uint16 readMDIO(uint8 phy, uint8 phyreg);
 bool writeMDIO(uint8 phy, uint8 phyreg, uint16 regData);
 
+/*for CMF 管理通道*/
+void writeTCMFData(uint8 sn, uint8 b);
+void setTCMFLength(uint8 len);
+bool ifTCMFOver(void);
+void startTCMF(void);
+
+bool ifRCMFReady(void);
+uint8 getRCMFLength(void);
+uint8 readRCMFData(uint8 sn);
+
 #define SE0165B_GLOBAL_ADDR_BASE								0x0000
 #define SE0165B_E1_ADDR_BASE									0x0100
 #define SE0165B_LCAS_ADDR_BASE									0x0200
@@ -75,6 +85,21 @@ bool writeMDIO(uint8 phy, uint8 phyreg, uint16 regData);
 /***************E1支路寄存器***************/
 #define SE0165B_E1_ALARM1(n)										(SE0165B_E1_ADDR_BASE + 0x00 + (n) * 0x10)
 #define SE0165B_E1_ALARM2(n)										(SE0165B_E1_ADDR_BASE + 0x04 + (n) * 0x10)
+
+
+/***************GFP寄存器*****************/
+#define SE0165B_GFP_RCMF_READY									(SE0165B_GFP_ADDR_BASE + 0x19)
+#define SE0165B_GFP_RCMF_DAT_INDEX								(SE0165B_GFP_ADDR_BASE + 0x1A)
+#define SE0165B_GFP_RCMF_DAT									(SE0165B_GFP_ADDR_BASE + 0x1B)
+#define SE0165B_GFP_RCMF_DAT_LEN								(SE0165B_GFP_ADDR_BASE + 0x1C)
+
+#define SE0165B_GFP_TCMF_CTRL									(SE0165B_GFP_ADDR_BASE + 0x0A)
+#define SE0165B_GFP_TCMF_DAT_INDEX								(SE0165B_GFP_ADDR_BASE + 0x0C)
+#define SE0165B_GFP_TCMF_DAT									(SE0165B_GFP_ADDR_BASE + 0x0D)
+#define SE0165B_GFP_TCMF_DAT_LEN								(SE0165B_GFP_ADDR_BASE + 0x06)
+
+
+
 
 void softReset(void);
 uint16 readChipID(void);

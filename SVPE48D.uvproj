@@ -32,9 +32,9 @@
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile></SFDFile>
           <bCustSvd>0</bCustSvd>
-          <UseEnv>0</UseEnv>
+          <UseEnv>1</UseEnv>
           <BinPath>D:\WorkProgram\Keil_V5\C51\BIN\</BinPath>
-          <IncludePath></IncludePath>
+          <IncludePath>D:\EclipseWorkspace\SVPE48D\Src</IncludePath>
           <LibPath></LibPath>
           <RegisterFilePath></RegisterFilePath>
           <DBRegisterFilePath>STC\</DBRegisterFilePath>
@@ -296,7 +296,7 @@
             </OnChipMemories>
           </Target51Misc>
           <C51>
-            <RegisterColoring>1</RegisterColoring>
+            <RegisterColoring>0</RegisterColoring>
             <VariablesInOrder>0</VariablesInOrder>
             <IntegerPromotion>1</IntegerPromotion>
             <uAregs>0</uAregs>
@@ -336,7 +336,7 @@
             <DataOverlaying>1</DataOverlaying>
             <OverlayString></OverlayString>
             <MiscControls>REMOVEUNUSED</MiscControls>
-            <DisableWarningNumbers></DisableWarningNumbers>
+            <DisableWarningNumbers>15</DisableWarningNumbers>
             <LinkerCmdFile></LinkerCmdFile>
             <Assign></Assign>
             <ReserveString></ReserveString>
@@ -370,14 +370,14 @@
               <FilePath>.\Src\main.c</FilePath>
             </File>
             <File>
-              <FileName>..\..\..\EclipseWorkspace\SVPE48D\Src\Conf_tny.A51</FileName>
-              <FileType>2</FileType>
-              <FilePath>$TC_ROOT$\..\..\..\EclipseWorkspace\SVPE48D\Src\Conf_tny.A51</FilePath>
-            </File>
-            <File>
               <FileName>..\..\..\EclipseWorkspace\SVPE48D\Src\STARTUP.A51</FileName>
               <FileType>2</FileType>
               <FilePath>$TC_ROOT$\..\..\..\EclipseWorkspace\SVPE48D\Src\STARTUP.A51</FilePath>
+            </File>
+            <File>
+              <FileName>..\..\..\EclipseWorkspace\SVPE48D\Src\Conf_tny.A51</FileName>
+              <FileType>2</FileType>
+              <FilePath>$TC_ROOT$\..\..\..\EclipseWorkspace\SVPE48D\Src\Conf_tny.A51</FilePath>
             </File>
           </Files>
         </Group>
@@ -440,11 +440,6 @@
               <FilePath>.\Src\Board\BoardSVPE48D.c</FilePath>
             </File>
             <File>
-              <FileName>console.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Src\Board\console.c</FilePath>
-            </File>
-            <File>
               <FileName>LED.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\Board\LED.c</FilePath>
@@ -478,6 +473,41 @@
               <FileName>rtl8306e_asicdrv.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\RTLLib\rtl8306e_asicdrv.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Comm</GroupName>
+          <Files>
+            <File>
+              <FileName>command.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\communication\command.c</FilePath>
+            </File>
+            <File>
+              <FileName>console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\communication\console.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\communication\dcc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Business</GroupName>
+          <Files>
+            <File>
+              <FileName>Device.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\Device.c</FilePath>
+            </File>
+            <File>
+              <FileName>E1Port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\E1Port.c</FilePath>
             </File>
           </Files>
         </Group>
