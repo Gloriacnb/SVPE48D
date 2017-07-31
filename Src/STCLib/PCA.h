@@ -57,10 +57,10 @@ typedef struct
 } PCA_InitTypeDef;
 
 extern	bit		B_Capture0,B_Capture1,B_Capture2;
-extern	u8		PCA0_mode,PCA1_mode,PCA2_mode;
-extern	u16		CCAP0_tmp,PCA_Timer0;
-extern	u16		CCAP1_tmp,PCA_Timer1;
-extern	u16		CCAP2_tmp,PCA_Timer2;
+extern	idata u8		PCA0_mode,PCA1_mode,PCA2_mode;
+extern	idata u16		CCAP0_tmp,PCA_Timer0;
+extern	idata u16		CCAP1_tmp,PCA_Timer1;
+extern	idata u16		CCAP2_tmp,PCA_Timer2;
 void	PCA_Init(u8 PCA_id, PCA_InitTypeDef *PCAx);
 void	UpdatePwm(u8 PCA_id, u8 pwm_value);
 void 	PWMn_Update(u8 PCA_id, u16 high);

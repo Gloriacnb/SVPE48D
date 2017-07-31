@@ -5,7 +5,10 @@
  *      Author: Administrator
  */
 
-#include "..\Business\Device.h"
+
+#include "../Business/Device.h"
+#include "../Business/ConfigData.h"
+#include "../inc/ErrCode.h"
 
 static const uint8 DEVICE_TYPE[] = {0x30, 0x44};
 static const uint8 HARDWARE_VER[] = {1,0};
@@ -26,6 +29,13 @@ uint8 getFactoryInfo(uint8* info) {
 	for (i = 0; i < sizeof(SOFTWARE_VER); ++i) {
 		info[dataLen++] = SOFTWARE_VER[i];
 	}
-	return dataLen;
+	readConfig(DEV_ATTR_SECTOR, &info[dataLen], FACTORY_INFO_BYTES);
+	return dataLen + FACTORY_INFO_BYTES;
 }
 
+uint8 setFactoryInfo(uint8* d, uint8 len) {
+	if( d == 0 || len < FACTORY_INFO_BYTES ) {
+		return ERR_INPUT;
+	}
+	return saveConfig(DEV_ATTR_SECTOR, d, len);
+}

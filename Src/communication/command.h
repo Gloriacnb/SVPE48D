@@ -25,11 +25,6 @@
 #define TRANSLATE_TAIL1	0x5E
 #define TRANSLATE_TAIL2	0x5D
 
-enum {
-	ERR_CRC = 0x80,
-	ERR_NOSUCHNM,
-
-};
 
 enum {
 	LOCAL_CMD = 0,
@@ -37,8 +32,8 @@ enum {
 };
 
 enum {
-	CMD_FACTORY_INFO = 1,
-
+	CMD_FACTORY_INFO 	= 1,
+	CMD_SET_FACTORY		= 2,
 };
 
 typedef struct {
