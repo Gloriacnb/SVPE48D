@@ -4,11 +4,13 @@
  *  Created on: 2017年7月20日
  *      Author: Administrator
  */
-#include "..\Board\console.h"
+#include "..\communication\console.h"
+#include "..\communication\dcc.h"
 #include "..\STCLib\USART.h"
 #include "..\inc\taskID.h"
 #include <RTX51TNY.H>
 #include <stdio.h>
+#include <string.h>
 
 /*收包状态机*/
 enum {
@@ -21,17 +23,9 @@ enum {
 
 }CONSOLE_FSM;
 
-enum {
-	LOCAL_CMD = 0,
-	REMOTE_CMD = 1,
-}CMD_TYPE;
 
-static idata CMD_FRAME frame;
+static xdata CMD_FRAME frame;
 
-#define FRAME_HEAD	0x7E
-#define TRANSLATE_HEAD	0x7D
-#define TRANSLATE_TAIL1	0x5E
-#define TRANSLATE_TAIL2	0x5D
 
 /*
  * 将管理串口初始化为
@@ -89,7 +83,7 @@ void serialRcvFrame(void) _task_ tsk_console_rcv {
 			}
 			break;
 		case STATE_LENGTH:
-			if( (c > MAX_FRAME_LEN) || (c < MIN_FRAME_LEN)) {
+			if( (c > MAX_LEN_VALUE) || (c < MIN_LEN_VALUE)) {
 				/*长度非法，复位状态机*/
 				fsm = STATE_IDLE;
 				rcvedBytes = 0;
@@ -133,13 +127,29 @@ void serialRcvFrame(void) _task_ tsk_console_rcv {
 			break;
 		}
 		if( fsm == STATE_OVER ) {
-			putchar(0x7E);
-			putchar(frame.rtype);
-			putchar(frame.rlen);
-			for (i = 0; i < frame.rlen; ++i) {
-				putchar(frame.rdata[i]);
+			if( frame.rtype == LOCAL_CMD ) {
+				processCMD(&frame);
+				consoleSendFrame(&frame);
+			}
+			else {
+				//转发命令给远端，并修改命令类型为本地命令
+				frame.ttype = LOCAL_CMD;
+				frame.tlen = frame.rlen;
+				memcpy(frame.tdata, frame.rdata, frame.tlen);
+				dccSendFrame(&frame);
 			}
 			fsm = STATE_IDLE;
 		}
 	}
 }
+
+void consoleSendFrame(CMD_FRAME* f) {
+	uint8 i;
+	putchar(FRAME_HEAD);
+	putchar(f->ttype);
+	putchar(f->tlen);
+	for (i = 0; i < f->tlen; ++i) {
+		putchar(f->tdata[i]);
+	}
+}
+

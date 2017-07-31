@@ -440,11 +440,6 @@
               <FilePath>.\Src\Board\BoardSVPE48D.c</FilePath>
             </File>
             <File>
-              <FileName>console.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Src\Board\console.c</FilePath>
-            </File>
-            <File>
               <FileName>LED.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\Board\LED.c</FilePath>
@@ -478,6 +473,41 @@
               <FileName>rtl8306e_asicdrv.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\RTLLib\rtl8306e_asicdrv.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Comm</GroupName>
+          <Files>
+            <File>
+              <FileName>command.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\communication\command.c</FilePath>
+            </File>
+            <File>
+              <FileName>console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\communication\console.c</FilePath>
+            </File>
+            <File>
+              <FileName>dcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\communication\dcc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Business</GroupName>
+          <Files>
+            <File>
+              <FileName>Device.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\Device.c</FilePath>
+            </File>
+            <File>
+              <FileName>E1Port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\E1Port.c</FilePath>
             </File>
           </Files>
         </Group>

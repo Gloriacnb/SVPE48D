@@ -14,6 +14,7 @@
 #define tsk_led_e1  	2
 #define tsk_test		3
 #define tsk_console_rcv	4
+#define tsk_dcc_rcv		5
 #else
 #define _task_
 #define tsk_init
@@ -21,10 +22,12 @@
 #define tsk_led_e1
 #define tsk_test
 #define tsk_console_rcv
-
+#define tsk_dcc_rcv
 
 #define idata
 #define xdata
+#define sbit
+#define bdata
 #endif
 
 

@@ -189,6 +189,34 @@ bool writeMDIO(uint8 phy, uint8 phyreg, uint16 regData) {
 	return true;
 }
 
+/*for cmf 读写*/
+void writeTCMFData(uint8 sn, uint8 b) {
+	writeSE0165B(SE0165B_GFP_TCMF_DAT_INDEX, sn);
+	writeSE0165B(SE0165B_GFP_TCMF_DAT, b);
+}
+
+void setTCMFLength(uint8 len) {
+	writeSE0165B(SE0165B_GFP_TCMF_DAT_LEN, len);
+}
+bool ifTCMFOver(void) {
+	return (readSE0165B(SE0165B_GFP_TCMF_CTRL) & (1<<6)) != 0;
+}
+void startTCMF(void) {
+	writeSE0165B(SE0165B_GFP_TCMF_CTRL, (1<<7));
+}
+
+bool ifRCMFReady(void) {
+	uint8 v = readSE0165B(SE0165B_GFP_RCMF_READY);
+	return (v & 1) == 1;
+}
+uint8 getRCMFLength(void) {
+	return readSE0165B(SE0165B_GFP_RCMF_DAT_LEN);
+}
+uint8 readRCMFData(uint8 sn) {
+	writeSE0165B(SE0165B_GFP_RCMF_DAT_INDEX, sn);
+	return readSE0165B(SE0165B_GFP_RCMF_DAT);
+}
+
 void testChipSE0165B(void) _task_ tsk_test {
 	uint16 chipID = 0x0165;
 	while(1) {

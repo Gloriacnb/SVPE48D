@@ -28,8 +28,7 @@ uint8 bdata LED_STA = 0;		//点灯输出字节
 	sbit E1_4_los = LED_STA^7;
 
 /*
- * 设置Run灯（P3.5）Pin 为输出模式
- * 建立点灯任务  tsk_led
+ * 建立点灯任务  tsk_led 和 tsk_led_e1
  */
 void initLEDs(void) {
 

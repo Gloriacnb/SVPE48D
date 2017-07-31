@@ -5,7 +5,8 @@
  *      Author: Administrator
  */
 #include "..\Board\BoardSVPE48D.h"
-#include "..\Board\console.h"
+#include "..\communication\console.h"
+#include "..\communication\dcc.h"
 #include "..\Board\LED.h"
 #include "..\Board\ChipSE0165B.h"
 #include "..\Board\ChipRTL8306E.h"
@@ -30,6 +31,7 @@ void boardInit(void) {
 	if( !initSE0165B() ) {
         printf("Init SE0165B failed!!\r\n");
     }
+    initDCC();
 	initLEDs();
 	if( !initRTL8306E() ) {
 		printf("Init RTL8306E failed!!\r\n");

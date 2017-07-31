@@ -5,7 +5,7 @@
 #include	"config.h"
 
 //	选择MCU型号
-#define	MCU_Type	STC15F_L2K08S2	//STC15F_L2K08S2, STC15F_L2K16S2, STC15F_L2K24S2, STC15F_L2K32S2, STC15F_L2K40S2, STC15F_L2K48S2, STC15F_L2K56S2, STC15F_L2K60S2, IAP15F_L2K61S2
+#define	MCU_Type	STC15W4K48S4	//STC15F_L2K08S2, STC15F_L2K16S2, STC15F_L2K24S2, STC15F_L2K32S2, STC15F_L2K40S2, STC15F_L2K48S2, STC15F_L2K56S2, STC15F_L2K60S2, IAP15F_L2K61S2
 
 
 /************************** ISP/IAP *****************************
@@ -25,27 +25,35 @@ STC15F/L2K60S2   1K      2扇区  0x0000  ~  0x03FF        0xF000
 
 STC15F/L2K61S2   无EPROM, 整个122扇区的FLASH都可以擦写 地址 0x0000~0xF3ff.
 
+STC15W4K32S4	 26K    52扇区 0x0000  ~  0x67FF		  0x8C00
+STC15W4K40S4	 18K    36扇区 0x0000  ~  0x47FF		  0xAC00
+STC15W4K48S4	 10K    20扇区 0x0000  ~  0x27FF		  0xCC00
+
+
 */
 
-#if   (MCU_Type == STC15F_L2K08S2)
-      #define   MOVC_ShiftAddress    0x2000
-#elif (MCU_Type == STC15F_L2K16S2)
-      #define   MOVC_ShiftAddress    0x4000
-#elif (MCU_Type == STC15F_L2K24S2
-      #define   MOVC_ShiftAddress    0x6000
-#elif (MCU_Type == STC15F_L2K32S2
-      #define   MOVC_ShiftAddress    0x8000
-#elif (MCU_Type == STC15F_L2K40S2
-      #define   MOVC_ShiftAddress    0xA000
-#elif (MCU_Type == STC15F_L2K48S2
-      #define   MOVC_ShiftAddress    0xC000
-#elif (MCU_Type == STC15F_L2K56S2
-      #define   MOVC_ShiftAddress    0xE000
-#elif (MCU_Type == STC15F_L2K60S2
-      #define   MOVC_ShiftAddress    0xF000
-#elif (MCU_Type == IAP15F_L2K61S2
-      #define   MOVC_ShiftAddress    0x0000
-#endif
+//#if   (MCU_Type == STC15W4K48S4)
+//      #define   MOVC_ShiftAddress    0xCC00
+//#elif (MCU_Type == STC15F_L2K08S2)
+//      #define   MOVC_ShiftAddress    0x2000
+//#elif (MCU_Type == STC15F_L2K16S2)
+//      #define   MOVC_ShiftAddress    0x4000
+//#elif (MCU_Type == STC15F_L2K24S2)
+//      #define   MOVC_ShiftAddress    0x6000
+//#elif (MCU_Type == STC15F_L2K32S2)
+//      #define   MOVC_ShiftAddress    0x8000
+//#elif (MCU_Type == STC15F_L2K40S2)
+//      #define   MOVC_ShiftAddress    0xA000
+//#elif (MCU_Type == STC15F_L2K48S2)
+//      #define   MOVC_ShiftAddress    0xC000
+//#elif (MCU_Type == STC15F_L2K56S2)
+//      #define   MOVC_ShiftAddress    0xE000
+//#elif (MCU_Type == STC15F_L2K60S2)
+//      #define   MOVC_ShiftAddress    0xF000
+//#elif (MCU_Type == IAP15F_L2K61S2)
+//      #define   MOVC_ShiftAddress    0x0000
+
+//#endif
 
 
 void	DisableEEPROM(void);
