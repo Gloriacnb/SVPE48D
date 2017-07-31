@@ -509,6 +509,11 @@
               <FileType>1</FileType>
               <FilePath>.\Src\Business\E1Port.c</FilePath>
             </File>
+            <File>
+              <FileName>ConfigData.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\ConfigData.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

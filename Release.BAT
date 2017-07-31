@@ -28,5 +28,6 @@ SET CPU_XTAL=0x00B71B00
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\dcc.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\Device.__i"
 "D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\E1Port.__i"
+"D:\WorkProgram\Keil_V5\C51\BIN\C51.EXE" @".\Objects\CONFIG~1.__I"
 "D:\WorkProgram\Keil_V5\C51\BIN\LX51.EXE" @".\Objects\SVPE48D.lnp"
 "D:\WorkProgram\Keil_V5\C51\BIN\OHX51.EXE" ".\Objects\SVPE48D" HEX

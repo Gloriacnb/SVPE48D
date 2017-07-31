@@ -82,7 +82,7 @@ void ledRun(void) _task_ tsk_run {
  * 	注意：此任务为临时版本，当后期实现告警模块时，E1 LED做为告警输出的部分，到时需要重构
  */
 void ledE1(void) _task_ tsk_led_e1 {
-	int E1_ALARM[4] = {0};
+	int xdata E1_ALARM[4] = {0};
 	uint8 i = 0;
 
 	/*E1接口指示灯全亮两秒后熄灭*/
