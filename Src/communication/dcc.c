@@ -11,10 +11,12 @@
 #include "..\STCLib\USART.h"
 #include "../RTLLib/rtk_api_ext.h"
 #include "../Business/Device.h"
+#include "../STCLib/delay.h"
 #include <RTX51TNY.H>
 #include <string.h>
 
 static xdata CMD_FRAME dccframe;
+xdata uint8 looped = 0;
 
 void initDCC(void) {
 	os_create_task(tsk_dcc_rcv);		//dcc收包任务
@@ -32,7 +34,8 @@ void dccSendFrame(CMD_FRAME* f) {
 	}
 	setTCMFLength(f->tlen + 3);			//指定发送帧总长度
 	startTCMF();
-	while(!ifTCMFOver());
+	delay_ms(1);
+//	while(!ifTCMFOver());
 }
 
 /*
@@ -72,7 +75,6 @@ void dccRcvFrame(void) _task_ tsk_dcc_rcv {
 				consoleSendFrame(&dccframe);
 			}
 			else if( dccframe.rtype == LOOP_DETEC ) {
-				P35 ^= 1;
 				if( (dccframe.rdata[0] | (dccframe.rdata[1]<<8)) == getSerialNumber() ) {
 					//检测到环回
 					os_send_signal(tsk_loop_detect);
@@ -106,7 +108,6 @@ void sendLoopFrame(void) _task_ tsk_send_loop {
  * 	如果连续两秒都没有检测到环回，则打开LAN口
  */
 void loopDetection(void) _task_ tsk_loop_detect {
-	xdata uint8 looped = 0;
 	while(1) {
 		xdata uint8 i;
 		xdata char event;

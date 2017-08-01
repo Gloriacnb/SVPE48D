@@ -33,6 +33,9 @@ uint8 readRCMFData(uint8 sn);
 void setE1ClockMode(uint8 mode);
 void setE1RecoverClockSouce(uint8 e1port);
 
+/*for GFP ALARM*/
+bool ifGFPSyncLOSS(void);
+
 #define SE0165B_GLOBAL_ADDR_BASE								0x0000
 #define SE0165B_E1_ADDR_BASE									0x0100
 #define SE0165B_LCAS_ADDR_BASE									0x0200
@@ -103,7 +106,8 @@ void setE1RecoverClockSouce(uint8 e1port);
 #define SE0165B_GFP_TCMF_DAT									(SE0165B_GFP_ADDR_BASE + 0x0D)
 #define SE0165B_GFP_TCMF_DAT_LEN								(SE0165B_GFP_ADDR_BASE + 0x06)
 
-
+#define SE0165B_GFP_STA											(SE0165B_GFP_ADDR_BASE + 0x11)
+#define SE0165B_GFP_ALARM										(SE0165B_GFP_ADDR_BASE + 0x17)
 
 
 void softReset(void);

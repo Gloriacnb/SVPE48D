@@ -11,9 +11,11 @@
 #include "..\board\ChipSE0165B.h"
 #include "..\Business\E1Port.h"
 #include <stdio.h>
+
 #define LED_RUN P36
 #define LED_TOP_ALM P35
 
+extern xdata uint8 looped;
 /*
  * bdata 和相关的 sbit变量必须设置为全局变量
  */
@@ -72,6 +74,15 @@ void refreshE1LEDs(uint8 ledSta) {
 void ledRun(void) _task_ tsk_run {
 	while(1) {
 		LED_RUN ^= 1;
+		if( looped == 1 ) {
+			LED_TOP_ALM ^= 1;	//有环回时闪
+		}
+		else if( ifGFPSyncLOSS() ) {
+			LED_TOP_ALM = 0;	//GFP 失步亮
+		}
+		else {
+			LED_TOP_ALM = 1;	//GFP同步时灭
+		}
 		os_wait (K_TMO, 50, 0);
 	}
 }

@@ -245,6 +245,12 @@ void setE1RecoverClockSouce(uint8 e1port) {
 	writeSE0165B(SE0165B_E1_CFG2, v);
 }
 
+
+bool ifGFPSyncLOSS(void) {
+	uint8 v = readSE0165B(SE0165B_GFP_STA);
+	return (v & 3) != 2;
+}
+
 void testChipSE0165B(void) _task_ tsk_test {
 	xdata uint16 chipID = 0x0165;
 	while(1) {
