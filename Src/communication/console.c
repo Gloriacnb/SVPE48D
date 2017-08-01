@@ -39,7 +39,7 @@ void initConsole(void) {
 	info.Morecommunicate = DISABLE;
 	info.UART_BRT_Use = BRT_Timer2;
 	info.UART_P_SW = UART1_SW_P30_P31;
-	info.UART_BaudRate = 9600;
+	info.UART_BaudRate = 57600;
 	info.UART_Interrupt = ENABLE;
 	info.UART_Mode = UART_8bit_BRTx;
 	info.UART_Polity = PolityHigh;
@@ -52,10 +52,10 @@ void initConsole(void) {
 }
 
 void serialRcvFrame(void) _task_ tsk_console_rcv {
-	char c = 0;
+	data char c = 0;
 	uint8 i = 0;
-	uint8 fsm = STATE_IDLE;
-	uint8 rcvedBytes = 0;
+	data uint8 fsm = STATE_IDLE;
+	data uint8 rcvedBytes = 0;
 	while(1) {
 		c = _getkey();
 		if( (c == FRAME_HEAD) && (fsm != STATE_IDLE) ) {

@@ -23,5 +23,5 @@
 
 uint8 getFactoryInfo(uint8* info);
 uint8 setFactoryInfo(uint8* d, uint8 len);
-
+uint16 getSerialNumber(void);
 #endif /* SRC_BUSINESS_DEVICE_H_ */

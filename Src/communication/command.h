@@ -29,6 +29,7 @@
 enum {
 	LOCAL_CMD = 0,
 	REMOTE_CMD = 1,
+	LOOP_DETEC = 2,
 };
 
 enum {

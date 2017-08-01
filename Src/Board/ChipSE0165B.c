@@ -246,7 +246,7 @@ void setE1RecoverClockSouce(uint8 e1port) {
 }
 
 void testChipSE0165B(void) _task_ tsk_test {
-	uint16 chipID = 0x0165;
+	xdata uint16 chipID = 0x0165;
 	while(1) {
 		os_wait(K_TMO, 100, 0);
 	}

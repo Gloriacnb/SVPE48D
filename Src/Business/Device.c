@@ -39,3 +39,9 @@ uint8 setFactoryInfo(uint8* d, uint8 len) {
 	}
 	return saveConfig(DEV_ATTR_SECTOR, d, len);
 }
+
+uint16 getSerialNumber(void) {
+	uint8 info[FACTORY_INFO_BYTES];
+	readConfig(DEV_ATTR_SECTOR, info, FACTORY_INFO_BYTES);
+	return (info[FACTORY_INFO_BYTES-2] << 8) | info[FACTORY_INFO_BYTES-1];
+}

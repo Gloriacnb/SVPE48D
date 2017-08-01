@@ -83,7 +83,7 @@ void ledRun(void) _task_ tsk_run {
  */
 void ledE1(void) _task_ tsk_led_e1 {
 	int xdata E1_ALARM[4] = {0};
-	uint8 i = 0;
+	uint8 xdata i = 0;
 
 	/*E1接口指示灯全亮两秒后熄灭*/
 	turnOnE1LEDs();

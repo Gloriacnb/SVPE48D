@@ -56,25 +56,28 @@ void initDIPSwitch(void) {
 	}
 }
 
-
+/*
+ * E1恢复时钟时，自动选择可用E1任务
+ * 每秒轮询一次所有E1，将第一个无告警E1做为恢复时钟源。
+ */
 void selectE1Rclock(void) _task_ tsk_e1_rclock {
-	uint8 currntE1 = 0xff;
-	int e1Alarm = 0;
-	uint8 i = 0;
+	xdata uint8 currntE1 = 0xff;
+	xdata int e1Alarm = 0;
 	while(1) {
+		xdata uint8 i = 0;
 		os_wait(K_TMO, 100, 0);
 		for (i = 0; i < 4; ++i) {
 			e1Alarm = getE1Alarm(i);
 			if( e1Alarm == 0 ) {
 				//第一个无告警的E1
 				if( i == currntE1 ) {
-					break;		//跟原恢复时钟一致，不需改变
+					break;	//跟原恢复时钟一致，避免重复写寄存器，跳出for循环
 				}
 				else {
 					currntE1 = i;
 					setE1RecoverClockSouce(currntE1);
 				}
-				break;
+				break; //已经找到可用E1，跳出for循环
 			}
 		}
 	}

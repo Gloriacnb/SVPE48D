@@ -16,6 +16,8 @@
 #define tsk_console_rcv	4
 #define tsk_dcc_rcv		5
 #define tsk_e1_rclock	6
+#define tsk_loop_detect 7
+#define tsk_send_loop	8
 #else
 #define _task_
 #define tsk_init
@@ -25,12 +27,15 @@
 #define tsk_console_rcv
 #define tsk_dcc_rcv
 #define tsk_e1_rclock
-
+#define tsk_loop_detect
+#define tsk_send_loop
 
 #define idata
 #define xdata
 #define sbit
 #define bdata
+#define bit
+#define data
 #endif
 
 
