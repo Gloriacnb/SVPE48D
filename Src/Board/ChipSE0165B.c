@@ -105,7 +105,7 @@ void setDefault(void) {
 }
 
 /*
- * 串行输出Byte0到SDO0
+ * 串行输出Byte0到SDO0 用于E1 LED
  *
  */
 void sendByteSDO0(uint8 byte) {
@@ -215,6 +215,34 @@ uint8 getRCMFLength(void) {
 uint8 readRCMFData(uint8 sn) {
 	writeSE0165B(SE0165B_GFP_RCMF_DAT_INDEX, sn);
 	return readSE0165B(SE0165B_GFP_RCMF_DAT);
+}
+
+/*
+ * 设置E1时钟模式，
+ * 	mode 0 主时钟
+ * 		 1恢复时钟
+ */
+void setE1ClockMode(uint8 mode) {
+	uint8 v = readSE0165B(SE0165B_E1_CFG);
+	if( mode == 0 ) {
+		//主时钟
+		v &= ~(1<<1);
+	}
+	else {
+		v |= (1<<1);
+	}
+	writeSE0165B(SE0165B_E1_CFG, v);
+}
+
+/*
+ * 恢复时钟支路选择
+ * 	e1port 0~7
+ */
+void setE1RecoverClockSouce(uint8 e1port) {
+	uint8 v = readSE0165B(SE0165B_E1_CFG);
+	v &= ~0xf;
+	v |= (e1port & 0xf);
+	writeSE0165B(SE0165B_E1_CFG2, v);
 }
 
 void testChipSE0165B(void) _task_ tsk_test {

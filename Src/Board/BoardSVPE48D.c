@@ -10,6 +10,7 @@
 #include "..\Board\LED.h"
 #include "..\Board\ChipSE0165B.h"
 #include "..\Board\ChipRTL8306E.h"
+#include "../Board/DIPSwitch.h"
 #include "..\STCLib\GPIO.h"
 #include "..\inc\taskID.h"
 #include <stdio.h>
@@ -36,6 +37,7 @@ void boardInit(void) {
 	if( !initRTL8306E() ) {
 		printf("Init RTL8306E failed!!\r\n");
 	}
+	initDIPSwitch();
 	printf("Board initial completed.\r\n");
 
 //	boardAutoTest();

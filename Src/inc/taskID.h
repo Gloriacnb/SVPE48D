@@ -15,6 +15,7 @@
 #define tsk_test		3
 #define tsk_console_rcv	4
 #define tsk_dcc_rcv		5
+#define tsk_e1_rclock	6
 #else
 #define _task_
 #define tsk_init
@@ -23,6 +24,8 @@
 #define tsk_test
 #define tsk_console_rcv
 #define tsk_dcc_rcv
+#define tsk_e1_rclock
+
 
 #define idata
 #define xdata

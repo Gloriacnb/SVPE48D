@@ -55,7 +55,7 @@
           <ListingPath>.\List\</ListingPath>
           <HexFormatSelection>0</HexFormatSelection>
           <Merge32K>0</Merge32K>
-          <CreateBatchFile>1</CreateBatchFile>
+          <CreateBatchFile>0</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
@@ -453,6 +453,11 @@
               <FileName>ChipRTL8306E.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\Board\ChipRTL8306E.c</FilePath>
+            </File>
+            <File>
+              <FileName>DIPSwitch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Board\DIPSwitch.c</FilePath>
             </File>
           </Files>
         </Group>

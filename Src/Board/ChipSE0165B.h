@@ -29,6 +29,10 @@ bool ifRCMFReady(void);
 uint8 getRCMFLength(void);
 uint8 readRCMFData(uint8 sn);
 
+/*for E1时钟*/
+void setE1ClockMode(uint8 mode);
+void setE1RecoverClockSouce(uint8 e1port);
+
 #define SE0165B_GLOBAL_ADDR_BASE								0x0000
 #define SE0165B_E1_ADDR_BASE									0x0100
 #define SE0165B_LCAS_ADDR_BASE									0x0200
@@ -85,7 +89,8 @@ uint8 readRCMFData(uint8 sn);
 /***************E1支路寄存器***************/
 #define SE0165B_E1_ALARM1(n)										(SE0165B_E1_ADDR_BASE + 0x00 + (n) * 0x10)
 #define SE0165B_E1_ALARM2(n)										(SE0165B_E1_ADDR_BASE + 0x04 + (n) * 0x10)
-
+#define SE0165B_E1_CFG											(SE0165B_E1_ADDR_BASE + 0xE1)
+#define SE0165B_E1_CFG2											(SE0165B_E1_ADDR_BASE + 0xE2)
 
 /***************GFP寄存器*****************/
 #define SE0165B_GFP_RCMF_READY									(SE0165B_GFP_ADDR_BASE + 0x19)
