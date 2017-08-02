@@ -2,13 +2,13 @@
 #include "USART.h"
 #include <RTX51TNY.H>
 
-#define  OLEN  8                      /* size of serial transmission buffer   */
+#define  OLEN  32                      /* size of serial transmission buffer   */
 unsigned char  ostart;                /* transmission buffer start index      */
 unsigned char  oend;                  /* transmission buffer end index        */
 idata    char  outbuf[OLEN];          /* storage for transmission buffer      */
 unsigned char  otask = 0xff;          /* task number of output task           */
 
-#define  ILEN  8                      /* size of serial receiving buffer      */
+#define  ILEN  32                     /* size of serial receiving buffer      */
 unsigned char  istart;                /* receiving buffer start index         */
 unsigned char  iend;                  /* receiving buffer end index           */
 idata    char  inbuf[ILEN];           /* storage for receiving buffer         */
