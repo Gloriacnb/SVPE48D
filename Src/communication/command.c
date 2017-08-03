@@ -13,6 +13,8 @@
 
 #include "../inc/ErrCode.h"
 
+extern uint8 bdata LED_STA;
+
 static bool checkCRC(CMD_FRAME* f);
 static uint8 calculateCRC8(uint8* d, uint8 len);
 static void nack(CMD_FRAME* f, uint8 errcode);
@@ -40,6 +42,12 @@ void processCMD(CMD_FRAME* f) {
 			else {
 				nack(f, errcode);
 			}
+			break;
+		case CMD_LED_STA:
+			f->tdata[1] = CMD_OK;
+			f->tlen = 3;
+			f->tdata[2] = LED_STA;
+			f->tdata[f->tlen++] = CRC_FIX;	//增加CRC字节，长度+1
 			break;
 		default:
 			nack(f, ERR_NOSUCHNM);
