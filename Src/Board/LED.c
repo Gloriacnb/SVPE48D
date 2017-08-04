@@ -73,6 +73,7 @@ void refreshE1LEDs(uint8 ledSta) {
  */
 void ledRun(void) _task_ tsk_run {
 	while(1) {
+		os_wait (K_IVL, 50, 0);
 		LED_RUN ^= 1;
 		if( looped == 1 ) {
 			LED_TOP_ALM ^= 1;	//有环回时闪
@@ -83,7 +84,6 @@ void ledRun(void) _task_ tsk_run {
 		else {
 			LED_TOP_ALM = 1;	//GFP同步时灭
 		}
-		os_wait (K_TMO, 50, 0);
 	}
 }
 
@@ -102,6 +102,7 @@ void ledE1(void) _task_ tsk_led_e1 {
 	turnOffE1LEDs();
 
 	while(1) {
+		os_wait (K_IVL, 100, 0);
 		for (i = 0; i < 4; ++i) {
 			E1_ALARM[i] = getE1Alarm(i);
 		}
@@ -131,6 +132,5 @@ void ledE1(void) _task_ tsk_led_e1 {
         	E1_4_los = ~(E1_ALARM[3]>>0)&1;
 
         refreshE1LEDs(LED_STA);
-		os_wait (K_TMO, 100, 0);
 	}
 }

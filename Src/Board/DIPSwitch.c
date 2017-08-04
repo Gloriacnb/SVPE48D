@@ -65,7 +65,7 @@ void selectE1Rclock(void) _task_ tsk_e1_rclock {
 	xdata int e1Alarm = 0;
 	while(1) {
 		xdata uint8 i = 0;
-		os_wait(K_TMO, 100, 0);
+		os_wait(K_IVL, 100, 0);
 		for (i = 0; i < 4; ++i) {
 			e1Alarm = getE1Alarm(i);
 			if( e1Alarm == 0 ) {

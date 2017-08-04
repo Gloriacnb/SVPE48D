@@ -16,7 +16,7 @@
 #include <RTX51TNY.H>
 #include "..\inc\taskID.h"
 #define SE0165B_CS 		P37		//片选信号，低（0）有效
-static bool FIRST_MDIO = true;
+//static bool FIRST_MDIO = true;
 
 /*
  * 读取SE0165B寄存器
@@ -75,9 +75,9 @@ bool initSE0165B(void) {
  */
 void softReset(void) {
 	writeSE0165B(SE0165B_GLOBAL_RSTLOOP1_REG, 0x01);
-	delay_ms(5);
+    delay_ms(5*12);
 	writeSE0165B(SE0165B_GLOBAL_RSTLOOP1_REG, 0x00);
-    delay_ms(5);
+    delay_ms(5*12);
 }
 
 /*
@@ -254,6 +254,6 @@ bool ifGFPSyncLOSS(void) {
 void testChipSE0165B(void) _task_ tsk_test {
 	xdata uint16 chipID = 0x0165;
 	while(1) {
-		os_wait(K_TMO, 100, 0);
+	    os_delete_task (tsk_test);            	//stop init task (no longer needed)
 	}
 }

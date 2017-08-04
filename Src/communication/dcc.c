@@ -97,7 +97,7 @@ void sendLoopFrame(void) _task_ tsk_send_loop {
 	loopframe.tdata[1] = (sn>>8) & 0xff;
 	loopframe.tdata[2] = CMD_OK;
 	while(1) {
-		os_wait(K_TMO, 70, 0);
+		os_wait(K_IVL, 70, 0);
 		dccSendFrame(&loopframe);
 	}
 }
@@ -111,7 +111,7 @@ void loopDetection(void) _task_ tsk_loop_detect {
 	while(1) {
 		xdata uint8 i;
 		xdata char event;
-		event = os_wait(K_SIG | K_TMO, 200, 0);
+		event = os_wait(K_SIG | K_IVL, 200, 0);
 		switch(event) {
 		case SIG_EVENT:	//检测到环回
 			if( looped == 0 ) {
@@ -120,6 +120,7 @@ void loopDetection(void) _task_ tsk_loop_detect {
 					rtl8306e_regbit_set(i, 0, 11, 0, 1);	//power down
 				}
 			}
+			os_reset_interval(200);
 			break;
 		case TMO_EVENT:	//连续两秒没有检测到环回，则认为环回已经取消
 			looped = 0;
