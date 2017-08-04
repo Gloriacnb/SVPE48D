@@ -38,16 +38,6 @@
 						</toolChain>
 					</folderInfo>
 					<fileInfo id="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.1235905192.1679638008" name="rtk_api_ext.h" rcbsApplicability="disable" resourcePath="Src/RTLLib/rtk_api_ext.h" toolsToInvoke=""/>
-					<folderInfo id="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.1235905192.420147706" name="/" resourcePath="Src/communication">
-						<toolChain id="org.eclipse.linuxtools.cdt.autotools.core.toolChain.1385675714" name="GNU Autotools Toolchain" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolChain" unusedChildren="">
-							<tool id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.162682723" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.1345033041"/>
-							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.806183749" name="autogen.sh" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.549185548"/>
-							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.1252188546" name="GCC C Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.460091764">
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.490097381" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.1041958009" name="GCC C++ Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.749801777"/>
-						</toolChain>
-					</folderInfo>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>

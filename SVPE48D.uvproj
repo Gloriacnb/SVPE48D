@@ -34,7 +34,7 @@
           <bCustSvd>0</bCustSvd>
           <UseEnv>1</UseEnv>
           <BinPath>D:\WorkProgram\Keil_V5\C51\BIN\</BinPath>
-          <IncludePath>D:\EclipseWorkspace\SVPE48D\Src</IncludePath>
+          <IncludePath></IncludePath>
           <LibPath></LibPath>
           <RegisterFilePath></RegisterFilePath>
           <DBRegisterFilePath>STC\</DBRegisterFilePath>
@@ -139,7 +139,7 @@
           <Target>
             <UseTarget>0</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
+            <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -312,7 +312,7 @@
               <MiscControls></MiscControls>
               <Define>IN_KEIL</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Src\STCLib;.\Src</IncludePath>
+              <IncludePath></IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
