@@ -370,14 +370,14 @@
               <FilePath>.\Src\main.c</FilePath>
             </File>
             <File>
-              <FileName>..\..\..\EclipseWorkspace\SVPE48D\Src\STARTUP.A51</FileName>
+              <FileName>STARTUP.A51</FileName>
               <FileType>2</FileType>
-              <FilePath>$TC_ROOT$\..\..\..\EclipseWorkspace\SVPE48D\Src\STARTUP.A51</FilePath>
+              <FilePath>.\Src\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>..\..\..\EclipseWorkspace\SVPE48D\Src\Conf_tny.A51</FileName>
+              <FileName>Conf_tny.A51</FileName>
               <FileType>2</FileType>
-              <FilePath>$TC_ROOT$\..\..\..\EclipseWorkspace\SVPE48D\Src\Conf_tny.A51</FilePath>
+              <FilePath>.\Src\Conf_tny.A51</FilePath>
             </File>
           </Files>
         </Group>
