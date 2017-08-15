@@ -36,6 +36,7 @@ enum {
 	CMD_FACTORY_INFO 	= 1,
 	CMD_SET_FACTORY		= 2,
 	CMD_LED_STA			= 3,
+	CMD_DEBUG			= 0xdb,
 };
 
 typedef struct {

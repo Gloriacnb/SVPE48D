@@ -15,6 +15,7 @@
 #include "..\inc\taskID.h"
 #include <stdio.h>
 #include <RTX51TNY.H>
+#include "../STCLib/delay.h"
 
 void boardInit(void) {
 
@@ -29,6 +30,17 @@ void boardInit(void) {
     
     /*配置UART1为 8位数据位，一位停止位，波特率9600*/
 	initConsole();
+	printf("Wait Board power up!\r\n");
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	delay_ms(20 * 12);
+	printf("Start initial board!\r\n");
+
 	if( !initSE0165B() ) {
         printf("Init SE0165B failed!!\r\n");
     }

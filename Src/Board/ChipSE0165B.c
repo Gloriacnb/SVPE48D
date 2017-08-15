@@ -55,6 +55,22 @@ void writeSE0165B(uint16 regaddr, uint8 regdata) {
 }
 
 /*
+ * 写入SE0165B寄存器 并回读校验
+ * 		regaddr 寄存器地址
+ * 		regdata 待写入数据
+ * 		bitmask 需要校验的bit位，只校验为1的
+ *
+ * 注意：SE0165B有写保护寄存器，本函数自动解除写保护，写完成后打开写保护
+ */
+
+bool writeSE0165BVerify(uint16 regaddr, uint8 regdata, uint8 bitmask) {
+	uint8 regv = 0;
+	writeSE0165B(regaddr, regdata);
+	regv = readSE0165B(regaddr);
+	return (regdata & bitmask) == (regv & bitmask);
+}
+
+/*
  * 芯片初始化函数
  *  芯片软复位
  * 	读取芯片ID，判断芯片是否在位
@@ -65,8 +81,7 @@ bool initSE0165B(void) {
 	if( readChipID() != SE0165B_CHIPID ) {
 		return false;
 	}
-    setDefault();
-	return true;
+    return setDefault();
 }
 
 
@@ -92,16 +107,25 @@ uint16 readChipID(void) {
  * LCAS VCAT均使能
  *	E1 1~4支路使能
  */
-void setDefault(void) {
+bool setDefault(void) {
 	char i = 0;
-	writeSE0165B(SE0165B_LCAS_TVCG_CFG, 0x03);	//发送方向 LCAS VCAT使能
-	writeSE0165B(SE0165B_LCAS_RVCG_CFG, 0x03);	//接收方向 LCAS VCAT使能
+	if( !writeSE0165BVerify(SE0165B_LCAS_TVCG_CFG, 0x03, 0xff) ) {	//发送方向 LCAS VCAT使能
+		return false;
+	}
+	if( !writeSE0165BVerify(SE0165B_LCAS_RVCG_CFG, 0x03, 0xff) ) {	//接收方向 LCAS VCAT使能
+		return false;
+	}
 
 	for (i = 0; i < 4; ++i) {
 		//支路1-4使能
-		writeSE0165B(SE0165B_LCAS_TTRIB_USE_SQ(i), 0x1f);
-		writeSE0165B(SE0165B_LCAS_RTRIB_USE_SQ(i), 0x1f);
+		if( !writeSE0165BVerify(SE0165B_LCAS_TTRIB_USE_SQ(i), 0x1f, 0x1f) ) {
+			return false;
+		}
+		if( !writeSE0165BVerify(SE0165B_LCAS_RTRIB_USE_SQ(i), 0x1f, 0x1f) ) {
+			return false;
+		}
 	}
+	return true;
 }
 
 /*

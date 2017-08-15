@@ -106,10 +106,10 @@ void ledE1(void) _task_ tsk_led_e1 {
 		for (i = 0; i < 4; ++i) {
 			E1_ALARM[i] = getE1Alarm(i);
 		}
-        E1_1_tsf = ((E1_ALARM[0]&0xaf)!=0);
-        E1_2_tsf = ((E1_ALARM[1]&0xaf)!=0);
-        E1_3_tsf = ((E1_ALARM[2]&0xaf)!=0);
-        E1_4_tsf = ((E1_ALARM[3]&0xaf)!=0);
+		E1_1_tsf = ((E1_ALARM[0] & 0xaf) != 0);
+		E1_2_tsf = ((E1_ALARM[1] & 0xaf) != 0);
+		E1_3_tsf = ((E1_ALARM[2] & 0xaf) != 0);
+		E1_4_tsf = ((E1_ALARM[3] & 0xaf) != 0);
         
         if( ((E1_ALARM[0]>>4)&1) && (~(E1_ALARM[0]>>0)&1) )
         	E1_1_los ^= 1;						//CV告警work灯闪烁
@@ -130,6 +130,8 @@ void ledE1(void) _task_ tsk_led_e1 {
         	E1_4_los ^= 1;
         else
         	E1_4_los = ~(E1_ALARM[3]>>0)&1;
+
+
 
         refreshE1LEDs(LED_STA);
 	}

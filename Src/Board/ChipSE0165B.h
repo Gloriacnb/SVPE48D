@@ -12,6 +12,7 @@
 
 uint8 readSE0165B(uint16 regaddr);
 void writeSE0165B(uint16 regaddr, uint8 regdata);
+bool writeSE0165BVerify(uint16 regaddr, uint8 regdata, uint8 bitmask);
 bool initSE0165B(void);
 void sendByteSDO0(uint8 byte);
 uint8 getByteSDO0(void);
@@ -112,6 +113,6 @@ bool ifGFPSyncLOSS(void);
 
 void softReset(void);
 uint16 readChipID(void);
-void setDefault(void);
+bool setDefault(void);
 
 #endif /* SRC_BOARD_CHIPSE0165B_H_ */

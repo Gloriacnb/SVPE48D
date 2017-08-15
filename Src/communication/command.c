@@ -10,6 +10,7 @@
 
 #include "..\communication\command.h"
 #include "..\Business\Device.h"
+#include "../Board/ChipSE0165B.h"
 
 #include "../inc/ErrCode.h"
 
@@ -48,6 +49,29 @@ void processCMD(CMD_FRAME* f) {
 			f->tlen = 3;
 			f->tdata[2] = LED_STA;
 			f->tdata[f->tlen++] = CRC_FIX;	//增加CRC字节，长度+1
+			break;
+		case CMD_DEBUG:
+			if( f->rlen >= 4 ) {
+				switch(f->rdata[1]) {
+				case 1: //read se0165B register
+					f->tlen = 3;
+					f->tdata[1] = CMD_OK;
+					f->tdata[2] = readSE0165B( (f->rdata[2]<<8) | f->rdata[3] );
+					f->tdata[f->tlen++] = CRC_FIX;	//增加CRC字节，长度+1
+					break;
+				case 2: //write se0165B register
+					writeSE0165B( (f->rdata[2]<<8) | f->rdata[3], f->rdata[4] );
+					ack(f);
+					break;
+				default:
+					nack(f, ERR_NOSUCHNM);
+					break;
+				}
+
+			}
+			else {
+				nack(f, ERR_INPUT);
+			}
 			break;
 		default:
 			nack(f, ERR_NOSUCHNM);
