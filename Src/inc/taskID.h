@@ -18,6 +18,7 @@
 #define tsk_e1_rclock	6
 #define tsk_loop_detect 7
 #define tsk_send_loop	8
+#define tsk_alarm_proc  9
 #else
 #define _task_
 #define tsk_init
@@ -29,6 +30,7 @@
 #define tsk_e1_rclock
 #define tsk_loop_detect
 #define tsk_send_loop
+#define tsk_alarm_proc
 
 #define idata
 #define xdata

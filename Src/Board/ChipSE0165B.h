@@ -36,6 +36,10 @@ void setE1RecoverClockSouce(uint8 e1port);
 
 /*for GFP ALARM*/
 bool ifGFPSyncLOSS(void);
+uint8 getVCGAlarm(void);
+
+/*for vcgmember Alarm*/
+uint8 getMemberAlarm(uint8 msn);
 
 #define SE0165B_GLOBAL_ADDR_BASE								0x0000
 #define SE0165B_E1_ADDR_BASE									0x0100
@@ -86,13 +90,20 @@ bool ifGFPSyncLOSS(void);
 /***************LCAS寄存器****************/
 #define SE0165B_LCAS_TVCG_CFG									(SE0165B_LCAS_ADDR_BASE + 0x10)
 #define SE0165B_LCAS_RVCG_CFG									(SE0165B_LCAS_ADDR_BASE + 0x80)
+
+/*bit0 delay_err*/
+#define SE0165B_LCAS_TVCG_ALARM									(SE0165B_LCAS_ADDR_BASE + 0x15)
+
+/*bit1 LOA,bit2 GIDM, bit3 DELAYERR, bit4 MFIERR*/
+#define SE0165B_LCAS_RVCG_ALARM									(SE0165B_LCAS_ADDR_BASE + 0x85)
 #define SE0165B_LCAS_TTRIB_USE_SQ(n)							(SE0165B_LCAS_ADDR_BASE + 0x40 + (n) * 0x8)
 #define SE0165B_LCAS_RTRIB_USE_SQ(n)							(SE0165B_LCAS_ADDR_BASE + 0xC0 + (n) * 0x8)
 
-
+/*bit0 SQM, bit1 CRCERR, bit5 LOM2, bit6 LOM1*/
+#define SE0165B_LCAS_RTRIB_ALARM(n)								(SE0165B_LCAS_ADDR_BASE + 0xC3 + (n) * 0x8)
 /***************E1支路寄存器***************/
-#define SE0165B_E1_ALARM1(n)										(SE0165B_E1_ADDR_BASE + 0x00 + (n) * 0x10)
-#define SE0165B_E1_ALARM2(n)										(SE0165B_E1_ADDR_BASE + 0x04 + (n) * 0x10)
+#define SE0165B_E1_ALARM1(n)									(SE0165B_E1_ADDR_BASE + 0x00 + (n) * 0x10)
+#define SE0165B_E1_ALARM2(n)									(SE0165B_E1_ADDR_BASE + 0x04 + (n) * 0x10)
 #define SE0165B_E1_CFG											(SE0165B_E1_ADDR_BASE + 0xE1)
 #define SE0165B_E1_CFG2											(SE0165B_E1_ADDR_BASE + 0xE2)
 
@@ -108,6 +119,8 @@ bool ifGFPSyncLOSS(void);
 #define SE0165B_GFP_TCMF_DAT_LEN								(SE0165B_GFP_ADDR_BASE + 0x06)
 
 #define SE0165B_GFP_STA											(SE0165B_GFP_ADDR_BASE + 0x11)
+
+//bit1 SYNCLOSS, bit3 THEC CRCERR, bit4 EHEC CRCERR, bit5 FCSERR
 #define SE0165B_GFP_ALARM										(SE0165B_GFP_ADDR_BASE + 0x17)
 
 

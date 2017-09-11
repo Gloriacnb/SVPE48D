@@ -521,6 +521,36 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>Alarm</GroupName>
+          <Files>
+            <File>
+              <FileName>AlarmModule.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Alarm\AlarmModule.c</FilePath>
+            </File>
+            <File>
+              <FileName>AlmSrcE1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Alarm\AlmSrcE1.c</FilePath>
+            </File>
+            <File>
+              <FileName>AlmSrcEth.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Alarm\AlmSrcEth.c</FilePath>
+            </File>
+            <File>
+              <FileName>AlmSrcMember.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Alarm\AlmSrcMember.c</FilePath>
+            </File>
+            <File>
+              <FileName>AlmSrcVCG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Alarm\AlmSrcVCG.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>

@@ -50,6 +50,9 @@ void processCMD(CMD_FRAME* f) {
 			f->tdata[2] = LED_STA;
 			f->tdata[f->tlen++] = CRC_FIX;	//增加CRC字节，长度+1
 			break;
+		case CMD_ALM_ATTR_GET:
+
+			break;
 		case CMD_DEBUG:
 			if( f->rlen >= 4 ) {
 				switch(f->rdata[1]) {

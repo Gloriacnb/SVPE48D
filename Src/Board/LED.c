@@ -16,6 +16,8 @@
 #define LED_TOP_ALM P35
 
 extern xdata uint8 looped;
+int xdata E1_ALARM[4] = {0};	//保存E1告警信号
+
 /*
  * bdata 和相关的 sbit变量必须设置为全局变量
  */
@@ -93,7 +95,6 @@ void ledRun(void) _task_ tsk_run {
  * 	注意：此任务为临时版本，当后期实现告警模块时，E1 LED做为告警输出的部分，到时需要重构
  */
 void ledE1(void) _task_ tsk_led_e1 {
-	int xdata E1_ALARM[4] = {0};
 	uint8 xdata i = 0;
 
 	/*E1接口指示灯全亮两秒后熄灭*/

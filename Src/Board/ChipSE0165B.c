@@ -275,6 +275,43 @@ bool ifGFPSyncLOSS(void) {
 	return (v & 3) != 2;
 }
 
+/*
+ * 读取GFP告警
+ * return
+ * 	bit0 ack_tmo
+ * 	bit1 LOA
+ * 	bit2 GIDM
+ * 	bit3 DELAYERR
+ * 	bit4 MFIERR
+ * 	bit5 SYNCLOSS
+ * 	bit6 CRCERR
+ * 	bit7 FCSERR
+ */
+uint8 getVCGAlarm(void) {
+	uint8 tvcgad = readSE0165B(SE0165B_LCAS_TVCG_ALARM) & 1; //ack tmo
+	uint8 rvcgad = readSE0165B(SE0165B_LCAS_RVCG_ALARM) & 0x1e; //mfi, delay gidm loa
+	uint8 rgfpad = readSE0165B(SE0165B_GFP_ALARM);
+	uint8 fcs = (rgfpad >> 5) & 1;
+	uint8 syncloss = (rgfpad >> 1) & 1;
+	uint8 crc = ((rgfpad & 0x18) == 0)?0:1;
+	uint8 rtnalarm = tvcgad | rvcgad | fcs | syncloss | crc;
+	return rtnalarm;
+}
+
+/*
+ * 读取VCG Member告警
+ * return
+ * 	bit0 SQM
+ * 	bit1 CRC
+ * 	bit2 LOM2
+ * 	bit3 LOM1
+ */
+uint8 getMemberAlarm(uint8 msn) {
+	uint8 almdata = getMemberAlarm(SE0165B_LCAS_RTRIB_ALARM(msn));
+	return (almdata & 0x03) | ((almdata >> 3) & 3);
+}
+
+
 void testChipSE0165B(void) _task_ tsk_test {
 	xdata uint16 chipID = 0x0165;
 	while(1) {

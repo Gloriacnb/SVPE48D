@@ -36,6 +36,8 @@ enum {
 	CMD_FACTORY_INFO 	= 1,
 	CMD_SET_FACTORY		= 2,
 	CMD_LED_STA			= 3,
+	CMD_ALM_ATTR_GET	= 4,
+	CMD_ALM_ATTR_SET	= 5,
 	CMD_DEBUG			= 0xdb,
 };
 

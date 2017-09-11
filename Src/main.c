@@ -16,7 +16,6 @@
 void init (void) _task_ tsk_init  {       /* program execution starts here        */
 
 	boardInit();							//硬件初始化
-    
     os_delete_task (tsk_init);            	//stop init task (no longer needed)
 }
 
