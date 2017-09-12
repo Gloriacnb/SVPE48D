@@ -55,7 +55,6 @@ void processAlarm (void) _task_ tsk_alarm_proc  {
 		os_wait (K_IVL, 200, 0);
 		for (i = 0; i < ACT_SRC; ++i) {	//遍历所有告警源
 			AS[i].getAlarm(AS[i].sid, AS[i].type);		//告警源读取其所有告警状态
-			printf("sid:0x%b02x\r\n", AS[i].sid);
 			for (j = 0; j < AS[i].typeCount; ++j) {	//遍历所有告警类型
 				if( IF_MASK(AS[i].type[j].attr) ) {
 					/*被屏蔽则无告警*/
@@ -79,7 +78,7 @@ void processAlarm (void) _task_ tsk_alarm_proc  {
 
 
 void reportAlarm(uint8 sid, uint8 tid, bool raise, uint8 level) {
-	printf("src:0x%bx, type:0x%bx, raise:%bd\r\n", sid, tid, raise);
+	printf("src:0x%bx, type:0x%bx, raise:%bd, level:%bd\r\n", sid, tid, raise, level);
 //	CMD_FRAME xdata f = {0};
 //	f.ttype = LOCAL_CMD;
 //	f.tlen = 6;
