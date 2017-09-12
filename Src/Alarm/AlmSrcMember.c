@@ -12,6 +12,7 @@
 #include "../inc/taskID.h"
 #include "../RTLLib/rtk_api_ext.h"
 #include "../Board/ChipSE0165B.h"
+#include "../STCLib/USART.h"
 
 static bool ifMemberAlarm(uint8 sid, ALM_TYPE* types);
 static bool saveMemberCfg(void);
@@ -35,7 +36,6 @@ int initALMSrcMEM(ALM_SRC* src, uint8 count) {
 			src[i].type[j].actState = false;
 			src[i].type[j].attr = CFG_DATA[i].attr[j];	//恢复配置
 		}
-
 	}
 	return ERR_NONE;
 }

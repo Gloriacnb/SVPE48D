@@ -307,7 +307,7 @@ uint8 getVCGAlarm(void) {
  * 	bit3 LOM1
  */
 uint8 getMemberAlarm(uint8 msn) {
-	uint8 almdata = getMemberAlarm(SE0165B_LCAS_RTRIB_ALARM(msn));
+	uint8 almdata = readSE0165B(SE0165B_LCAS_RTRIB_ALARM(msn));
 	return (almdata & 0x03) | ((almdata >> 3) & 3);
 }
 
