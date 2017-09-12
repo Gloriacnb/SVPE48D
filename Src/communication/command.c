@@ -51,7 +51,8 @@ void processCMD(CMD_FRAME* f) {
 			f->tdata[f->tlen++] = CRC_FIX;	//增加CRC字节，长度+1
 			break;
 		case CMD_ALM_ATTR_GET:
-
+			break;
+		case CMD_ALM_ATTR_SET:
 			break;
 		case CMD_DEBUG:
 			if( f->rlen >= 4 ) {

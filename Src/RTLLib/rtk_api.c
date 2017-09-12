@@ -2263,7 +2263,6 @@ rtk_api_ret_t rtk_vlan_set(rtk_vlan_t vid, rtk_portmask_t mbrmsk, rtk_portmask_t
     uint8 fullflag;
     int8 i;
 
-    fid = fid;
     /* vid must be 1~4094 */
     if ((vid == 0) || (vid > (RTL8306_VIDMAX - 1)))
         return RT_ERR_VLAN_VID;
@@ -3090,7 +3089,6 @@ rtk_api_ret_t rtk_vlan_tagSrc_get(rtk_port_t port, rtk_vidSrc_t *pVidSrc, rtk_pr
 rtk_api_ret_t rtk_stp_mstpState_set(rtk_stp_msti_id_t msti, rtk_port_t port, rtk_stp_state_t stp_state)
 {
     rtk_api_ret_t retVal;
-    msti = msti;
     if(port > RTK_PORT_ID_MAX)
         return RT_ERR_PORT_ID;
     
@@ -3128,7 +3126,6 @@ rtk_api_ret_t rtk_stp_mstpState_get(rtk_stp_msti_id_t msti, rtk_port_t port, rtk
 {
     rtk_api_ret_t retVal;
     uint8 state;
-    msti = msti;
     if(port > RTK_PORT_ID_MAX)
         return RT_ERR_PORT_ID;
     
@@ -3221,7 +3218,6 @@ rtk_api_ret_t rtk_l2_addr_get(rtk_mac_t *pMac, rtk_fid_t fid, rtk_l2_ucastAddr_t
 {
     rtk_api_ret_t retVal;
     uint8 isStatic, isAuth, port, entryaddr;
-    fid = fid;
     /* must be unicast address */
     if((NULL == pMac) || (pMac->octet[0] & 0x1))
         return RT_ERR_MAC;
@@ -3284,7 +3280,6 @@ rtk_api_ret_t rtk_l2_addr_del(rtk_mac_t *pMac, rtk_fid_t fid)
 {
     rtk_api_ret_t retVal;
     uint8 entryAddr;
-    fid = fid;
     /* must be unicast address */
     if((NULL == pMac) || (pMac->octet[0] & 0x1))
         return RT_ERR_MAC;  
@@ -3330,7 +3325,6 @@ rtk_api_ret_t rtk_l2_mcastAddr_add(rtk_mac_t *pMac, rtk_fid_t fid, rtk_portmask_
 {
     rtk_api_ret_t retVal;
     uint8 entryAddr;
-    fid = fid;
     /* must be L2 multicast address */
     if((NULL == pMac) || (!(pMac->octet[0] & 0x1)))
         return RT_ERR_MAC;
@@ -3377,7 +3371,6 @@ rtk_api_ret_t rtk_l2_mcastAddr_get(rtk_mac_t *pMac, rtk_fid_t fid, rtk_portmask_
 {
     rtk_api_ret_t retVal;
     uint8 isStatic, isAuth, portmask, entryaddr;
-    fid = fid;
     /* must be multicast address */
     if((NULL == pMac) || !(pMac->octet[0] & 0x1))
         return RT_ERR_MAC;  
@@ -3425,7 +3418,6 @@ rtk_api_ret_t rtk_l2_mcastAddr_del(rtk_mac_t *pMac, rtk_fid_t fid)
 {
     rtk_api_ret_t retVal;
     uint8 entryAddr;
-    fid = fid;
     /* must be multicast address */
     if((NULL == pMac) || !(pMac->octet[0] & 0x1))
         return RT_ERR_MAC;  
@@ -3907,7 +3899,6 @@ rtk_api_ret_t rtk_mirror_portBased_get(rtk_port_t *pMirroring_port, rtk_portmask
 rtk_api_ret_t rtk_dot1x_unauthPacketOper_set(rtk_port_t port, rtk_dot1x_unauth_action_t unauth_action)
 {
     rtk_api_ret_t retVal;
-    port = port;
     if(unauth_action > DOT1X_ACTION_TRAP2CPU)
         return RT_ERR_DOT1X_PROC;
 
@@ -3949,7 +3940,6 @@ rtk_api_ret_t rtk_dot1x_unauthPacketOper_get(rtk_port_t port, rtk_dot1x_unauth_a
 {
     rtk_api_ret_t retVal;
     uint8 action;
-    port = port;
     if(NULL == pUnauth_action)
         return RT_ERR_NULL_POINTER;
     
@@ -4382,7 +4372,6 @@ rtk_api_ret_t rtk_dot1x_macBasedAuthMac_add(rtk_port_t port, rtk_mac_t *pAuth_ma
     uint8 isHit;
     uint16 index;
 
-    fid = fid;
     if(port > RTK_PORT_ID_MAX) 
         return RT_ERR_PORT_ID;        
 
@@ -4449,7 +4438,6 @@ rtk_api_ret_t rtk_dot1x_macBasedAuthMac_del(rtk_port_t port, rtk_mac_t *pAuth_ma
     uint8 isHit;
     uint16 index;
 
-    fid = fid;
     if(port > RTK_PORT_ID_MAX) 
         return RT_ERR_PORT_ID;        
 
@@ -4705,7 +4693,6 @@ rtk_api_ret_t rtk_svlan_tpidEntry_get(rtk_svlan_tpid_t *pSvlan_tag_id)
 rtk_api_ret_t rtk_svlan_portPvid_set(rtk_port_t port, rtk_vlan_t pvid, rtk_pri_t priority, rtk_dei_t dei)
 {
     uint16 regval;
-    dei = dei;
     if(port > RTK_PORT_ID_MAX) 
         return RT_ERR_PORT_ID;        
     
