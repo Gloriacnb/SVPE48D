@@ -560,6 +560,26 @@
               <FileType>1</FileType>
               <FilePath>.\Src\Business\ConfigData.c</FilePath>
             </File>
+            <File>
+              <FileName>ConfigModule.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\ConfigModule.c</FilePath>
+            </File>
+            <File>
+              <FileName>VCG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\VCG.c</FilePath>
+            </File>
+            <File>
+              <FileName>Member.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\Member.c</FilePath>
+            </File>
+            <File>
+              <FileName>EthPort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\Business\EthPort.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

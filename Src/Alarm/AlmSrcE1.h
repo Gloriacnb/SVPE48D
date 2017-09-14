@@ -8,7 +8,6 @@
 #ifndef SRC_ALARM_ALMSRCE1_H_
 #define SRC_ALARM_ALMSRCE1_H_
 
-#include "../inc/type.h"
 #include "../Alarm/AlarmDefine.h"
 
 enum {
@@ -22,11 +21,6 @@ enum {
 	E1_TYPE_SIZE,
 };//定义E1的告警类型
 
-typedef struct E1_ALM_ATTR_DATA_T {
-	uint8 attr[E1_TYPE_SIZE];
-}E1_CFG_DATA;
-
 int initALMSrcE1(ALM_SRC* src, uint8 cout);
-void readE1ConfigData(void);
 
 #endif /* SRC_ALARM_ALMSRCE1_H_ */

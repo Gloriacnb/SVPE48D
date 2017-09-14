@@ -7,13 +7,10 @@
 
 #include "../Alarm/AlmSrcEth.h"
 #include "../inc/ErrCode.h"
-#include "../Business/ConfigData.h"
-#include "../inc/taskID.h"
 #include "../RTLLib/rtk_api_ext.h"
+#include "../Business/EthPort.h"
 
 static bool ifEthAlarm(uint8 sid, ALM_TYPE* types);
-static bool saveEthCfg(void);
-static xdata ETH_CFG_DATA CFG_DATA[ETH_ALM_SRC_N] = {0};
 
 int initALMSrcETH(ALM_SRC* src, uint8 count) {
 	uint8 i = 0;
@@ -21,7 +18,6 @@ int initALMSrcETH(ALM_SRC* src, uint8 count) {
 	if( src == 0 ) {
 		return ERR_INPUT;
 	}
-	readEthConfigData();
 	for (i = 0; i < count; ++i) {
 		src[i].sid = ETH_ASID_BASE + i;
 		src[i].saveCfg = saveEthCfg;
@@ -31,13 +27,16 @@ int initALMSrcETH(ALM_SRC* src, uint8 count) {
 			src[i].type[j].tid = ETH_ATID_BASE+j;
 			src[i].type[j].preState = false;
 			src[i].type[j].actState = false;
-			src[i].type[j].attr = CFG_DATA[i].attr[j];	//恢复配置
+			src[i].type[j].attr = getEthConfigStruct(i)->attr[j];	//恢复配置
 		}
 
 	}
 	return ERR_NONE;
 }
 
+/*
+ * 告警处理任务的回调函数，负责采集各个告警信号的最新状态
+ */
 bool ifEthAlarm(uint8 sid, ALM_TYPE* types) {
 	rtk_port_linkStatus_t link;
 	rtk_port_speed_t speed;
@@ -52,19 +51,3 @@ bool ifEthAlarm(uint8 sid, ALM_TYPE* types) {
 	return true;
 }
 
-void readEthConfigData(void) {
-	uint8 i,j;
-	readConfig(ETH_CFG_SECTOR, (uint8*)CFG_DATA, sizeof(ETH_CFG_DATA)*ETH_ALM_SRC_N);
-	if( CFG_DATA[0].attr[0] == 0xff ) {
-		for (i = 0; i < ETH_ALM_SRC_N; ++i) {
-			for (j = 0; j < ETH_TYPE_SIZE; ++j) {
-				CFG_DATA[i].attr[j] = 0x0A;
-			}
-		}
-		saveEthCfg();
-	}
-}
-bool saveEthCfg(void) {
-	saveConfig(ETH_CFG_SECTOR, (uint8*)CFG_DATA, sizeof(ETH_CFG_DATA)*ETH_ALM_SRC_N);
-	return true;
-}

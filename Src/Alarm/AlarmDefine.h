@@ -9,6 +9,7 @@
 #define SRC_ALARM_ALARMDEFINE_H_
 
 #include "../inc/type.h"
+#include "../Board/BoardConfig.h"
 
 #define MAX_TYPES	8
 
@@ -50,10 +51,10 @@ typedef enum {
 	ASID_ETH_1 = ETH_ASID_BASE, ASID_ETH_2, ASID_ETH_3, ASID_ETH_4,
 };//定义告警源的ID
 
-#define E1_ALM_SRC_N	4	//4路E1告警
-#define VCG_ALM_SRC_N	1	//1路VCG告警
-#define MEM_ALM_SRC_N	4	//4路VCG member告警
-#define ETH_ALM_SRC_N	4	//4路以太接口告警
+#define E1_ALM_SRC_N	BD_E1_NUM	//4路E1告警
+#define VCG_ALM_SRC_N	BD_VCG_NUM	//1路VCG告警
+#define MEM_ALM_SRC_N	BD_VCGM_NUM	//4路VCG member告警
+#define ETH_ALM_SRC_N	BD_ETH_NUM	//4路以太接口告警
 
 /*不同告警源在总告警源数组中的元素序号定义*/
 #define E1_SN_BASE		0								//E1告警源的起始序列号

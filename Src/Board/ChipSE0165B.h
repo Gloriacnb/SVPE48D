@@ -108,6 +108,12 @@ uint8 getMemberAlarm(uint8 msn);
 #define SE0165B_E1_CFG2											(SE0165B_E1_ADDR_BASE + 0xE2)
 
 /***************GFP寄存器*****************/
+#define SE0165B_GFP_T_CFG										(SE0165B_GFP_ADDR_BASE + 0x02)
+#define SE0165B_GFP_T_UPI										(SE0165B_GFP_ADDR_BASE + 0x03)
+#define SE0165B_GFP_T_CID										(SE0165B_GFP_ADDR_BASE + 0x04)
+#define SE0165B_GFP_T_CRB										(SE0165B_GFP_ADDR_BASE + 0x05)
+#define SE0165B_GFP_R_CFG										(SE0165B_GFP_ADDR_BASE + 0x10)
+
 #define SE0165B_GFP_RCMF_READY									(SE0165B_GFP_ADDR_BASE + 0x19)
 #define SE0165B_GFP_RCMF_DAT_INDEX								(SE0165B_GFP_ADDR_BASE + 0x1A)
 #define SE0165B_GFP_RCMF_DAT									(SE0165B_GFP_ADDR_BASE + 0x1B)

@@ -11,7 +11,6 @@
 #include "../Alarm/AlmSrcEth.h"
 #include "../Alarm/AlmSrcVCG.h"
 #include "../Alarm/AlmSrcMember.h"
-#include "../Alarm/AlarmDefine.h"
 #include <RTX51TNY.H>
 #include <stdio.h>
 #include "../communication/dcc.h"
@@ -76,7 +75,10 @@ void processAlarm (void) _task_ tsk_alarm_proc  {
 	}
 }
 
-
+/*
+ * 上报告警变化
+ * 	当有告警变化时，向两个管理方向，串口和dcc分别发送通知消息。
+ */
 void reportAlarm(uint8 sid, uint8 tid, bool raise, uint8 level) {
 	printf("src:0x%bx, type:0x%bx, raise:%bd, level:%bd\r\n", sid, tid, raise, level);
 //	CMD_FRAME xdata f = {0};
@@ -93,12 +95,44 @@ void reportAlarm(uint8 sid, uint8 tid, bool raise, uint8 level) {
 //	dccSendFrame(&f);
 }
 
-/*告警属性配置接口*/
-uint8 getAlarmAttribute(uint8 src, uint8 type) {
-	return AS[SN(src)].type[SN(type)].attr;
+/*
+ * 根据给定的告警源ID，返回告警源对应的数据结构
+ */
+ALM_SRC* getAlarmSourceBySid(uint8 sid) {
+	ALM_SRC* s = 0;
+	switch( sid & 0xf0 ) {
+	case E1_ASID_BASE:
+		s = &AS[E1_SN_BASE];
+		break;
+	case VCG_ASID_BASE:
+		s = &AS[VCG_ALM_SRC_N];
+		break;
+	case MEM_ASID_BASE:
+		s = &AS[MEM_SN_BASE];
+		break;
+	case ETH_ASID_BASE:
+		s = &AS[ETH_SN_BASE];
+		break;
+	default:
+		return 0;
+	}
+	return &s[SN(sid)];
 }
-bool setAlarmAttribute(uint8 src, uint8 type, uint8 newattr) {
-	AS[SN(src)].type[SN(type)].attr = newattr;
-	return AS[SN(src)].saveCfg();
+
+/*告警属性配置接口*/
+uint8 getAlarmAttribute(uint8 sid, uint8 tid) {
+	ALM_SRC* s = getAlarmSourceBySid(sid);
+	if( s ) {
+		return s->type[SN(tid)].attr;
+	}
+	return ERR_INPUT;
+}
+bool setAlarmAttribute(uint8 sid, uint8 tid, uint8 newattr) {
+	ALM_SRC* s = getAlarmSourceBySid(sid);
+	if( s ) {
+		s->type[SN(tid)].attr = newattr;
+		return true;
+	}
+	return false;
 }
 
