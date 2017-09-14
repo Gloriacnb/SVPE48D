@@ -17,6 +17,7 @@
 #include <RTX51TNY.H>
 #include "../STCLib/delay.h"
 #include "../Alarm/AlarmModule.h"
+#include "../Business/ConfigModule.h"
 
 void boardInit(void) {
 
@@ -54,6 +55,7 @@ void boardInit(void) {
 	printf("Board initial completed.\r\n");
 
 //	boardAutoTest();
+	initConfigModule();						//初始化配置数据
 	runAlarmModule();						//运行告警模块
 
 }

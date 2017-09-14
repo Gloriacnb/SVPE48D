@@ -7,13 +7,9 @@
 
 #include "../Alarm/AlmSrcE1.h"
 #include "../inc/ErrCode.h"
-#include "../Business/ConfigData.h"
-#include "../inc/taskID.h"
-#include "../STCLib/USART.h"
+#include "../Business/E1Port.h"
 
 static bool ifE1Alarm(uint8 sid, ALM_TYPE* types);
-static bool saveE1Cfg(void);
-static xdata E1_CFG_DATA CFG_DATA[E1_ALM_SRC_N] = {0};
 extern int xdata E1_ALARM[4];
 
 int initALMSrcE1(ALM_SRC* src, uint8 count) {
@@ -22,7 +18,6 @@ int initALMSrcE1(ALM_SRC* src, uint8 count) {
 	if( src == 0 ) {
 		return ERR_INPUT;
 	}
-	readE1ConfigData();
 	for (i = 0; i < count; ++i) {
 		src[i].sid = E1_ASID_BASE + i;
 		src[i].saveCfg = saveE1Cfg;
@@ -32,13 +27,16 @@ int initALMSrcE1(ALM_SRC* src, uint8 count) {
 			src[i].type[j].tid = E1_ATID_BASE+j;
 			src[i].type[j].preState = false;
 			src[i].type[j].actState = false;
-			src[i].type[j].attr = CFG_DATA[i].attr[j];	//恢复配置
+			src[i].type[j].attr = getE1ConfigStruct(i)->attr[j];	//恢复配置
 		}
 
 	}
 	return ERR_NONE;
 }
 
+/*
+ * 告警处理任务的回调函数，负责采集各个告警信号的最新状态
+ */
 bool ifE1Alarm(uint8 sid, ALM_TYPE* types) {
 	int alarmd;
 	uint8 i;
@@ -50,19 +48,3 @@ bool ifE1Alarm(uint8 sid, ALM_TYPE* types) {
 	return true;
 }
 
-void readE1ConfigData(void) {
-	uint8 i,j;
-	readConfig(E1_CFG_SECTOR, (uint8*)CFG_DATA, sizeof(E1_CFG_DATA)*E1_ALM_SRC_N);
-	if( CFG_DATA[0].attr[0] == 0xff ) {
-		for (i = 0; i < E1_ALM_SRC_N; ++i) {
-			for (j = 0; j < E1_TYPE_SIZE; ++j) {
-				CFG_DATA[i].attr[j] = 0x0A;
-			}
-		}
-		saveE1Cfg();
-	}
-}
-bool saveE1Cfg(void) {
-	saveConfig(E1_CFG_SECTOR, (uint8*)CFG_DATA, sizeof(E1_CFG_DATA)*E1_ALM_SRC_N);
-	return true;
-}
