@@ -20,8 +20,8 @@ xdata uint8 looped = 0;
 
 void initDCC(void) {
 	os_create_task(tsk_dcc_rcv);		//dcc收包任务
-	os_create_task(tsk_loop_detect);	//环回维护任务
-	os_create_task(tsk_send_loop);		//建立环回帧发送任务
+//	os_create_task(tsk_loop_detect);	//环回维护任务
+//	os_create_task(tsk_send_loop);		//建立环回帧发送任务
 }
 
 void dccSendFrame(CMD_FRAME* f) {
@@ -34,7 +34,7 @@ void dccSendFrame(CMD_FRAME* f) {
 	}
 	setTCMFLength(f->tlen + 3);			//指定发送帧总长度
 	startTCMF();
-	delay_ms(1);
+	delay_ms(150);
 //	while(!ifTCMFOver());
 }
 

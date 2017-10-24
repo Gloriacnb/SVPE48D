@@ -12,7 +12,7 @@
 
 static const uint8 DEVICE_TYPE[] = {0x30, 0x44};
 static const uint8 HARDWARE_VER[] = {3,2};
-static const uint8 SOFTWARE_VER[] = {1,1,0};
+static const uint8 SOFTWARE_VER[] = {1,1,3};
 
 uint8 getFactoryInfo(uint8* info) {
 	uint8 dataLen = 0;

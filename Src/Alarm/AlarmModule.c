@@ -80,17 +80,17 @@ void processAlarm (void) _task_ tsk_alarm_proc  {
  * 	当有告警变化时，向两个管理方向，串口和dcc分别发送通知消息。
  */
 void reportAlarm(uint8 sid, uint8 tid, bool raise, uint8 level) {
-	printf("src:0x%bx, type:0x%bx, raise:%bd, level:%bd\r\n", sid, tid, raise, level);
-//	CMD_FRAME xdata f = {0};
-//	f.ttype = LOCAL_CMD;
-//	f.tlen = 6;
-//	f.tdata[0] = 0xAA;
-//	f.tdata[1] = sid;
-//	f.tdata[2] = tid;
-//	f.tdata[3] = raise?1:0;
-//	f.tdata[4] = level;
-//	f.tdata[5] = 0x5A;
-//	consoleSendFrame(&f);
+//	printf("src:0x%bx, type:0x%bx, raise:%bd, level:%bd\r\n", sid, tid, raise, level);
+	CMD_FRAME xdata f = {0};
+	f.ttype = LOCAL_CMD;
+	f.tlen = 6;
+	f.tdata[0] = 0xAA;
+	f.tdata[1] = sid;
+	f.tdata[2] = tid;
+	f.tdata[3] = raise?1:0;
+	f.tdata[4] = level;
+	f.tdata[5] = 0x5A;
+	consoleSendFrame(&f);
 //	f.ttype = REMOTE_CMD;
 //	dccSendFrame(&f);
 }
