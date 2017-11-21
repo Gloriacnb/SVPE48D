@@ -16,7 +16,7 @@
 #include <string.h>
 
 static xdata CMD_FRAME dccframe;
-xdata uint8 looped = 0;
+extern xdata uint8 looped;
 
 void initDCC(void) {
 	os_create_task(tsk_dcc_rcv);		//dcc收包任务

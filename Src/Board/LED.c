@@ -15,7 +15,7 @@
 #define LED_RUN P36
 #define LED_TOP_ALM P35
 
-extern xdata uint8 looped;
+xdata uint8 looped = 0;
 int xdata E1_ALARM[4] = {0};	//保存E1告警信号
 
 /*
